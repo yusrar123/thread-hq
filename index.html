@@ -27,5 +27,16 @@
       <a href="about.html">ABOUT</a>
     </div>
   </div>
+  <script>
+  const stickyNav = document.querySelector('.sticky-nav');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+      stickyNav.classList.add('show');
+    } else {
+      stickyNav.classList.remove('show');
+    }
+  });
+</script>
 </body>
 </html>
