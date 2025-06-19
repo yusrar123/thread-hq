@@ -151,6 +151,10 @@ form button {
 form button:hover {
   background: #888;
 }
+.navbar a.active {
+  color: #ccc;
+  text-decoration: underline;
+}
 
 
 
