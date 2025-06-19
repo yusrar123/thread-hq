@@ -10,3 +10,8 @@ function typeWriter() {
 }
 
 window.onload = typeWriter;
+document.getElementById('review-form').addEventListener('submit', function(e) {
+  e.preventDefault(); // stop form from refreshing page
+  alert('Thanks for submitting your review! We will check it soon.');
+  this.reset();
+});
