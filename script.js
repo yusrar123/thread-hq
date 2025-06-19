@@ -15,3 +15,15 @@ document.getElementById('review-form').addEventListener('submit', function(e) {
   alert('Thanks for submitting your review! We will check it soon.');
   this.reset();
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector(".review-form");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // prevent real submission
+
+    // You can add real saving here later
+    alert("✅ Thank you! Your review has been submitted.");
+
+    form.reset(); // clear form
+  });
+});
