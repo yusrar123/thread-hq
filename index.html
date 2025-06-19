@@ -2,79 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thread HQ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <!-- AOS CSS -->
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="sticky-nav">
-  <div class="nav-left">THREAD HQ</div>
-  <div class="nav-right">
-    <a href="reviews.html">REVIEWS</a>
-    <a href="legal.html">LEGAL</a>
-    <a href="about.html">ABOUT</a>
-  </div>
-</div>
-  <div class="container">
-    <div class="hero">
-      <h1>THREAD HQ</h1>
-      <p>Protecting customers from brand scams, one review at a time.</p>
-    </div>
-    <section class="panel">
-  <h2>Transparency over Trends</h2>
-  <p>We’re not just another review site. We help small brands and creators protect their reputation.</p>
-</section>
+  <header class="navbar">
+    <h1>Thread HQ</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Browse Reviews</a>
+      <a href="#">Submit Review</a>
+    </nav>
+  </header>
 
-<section class="panel alt">
-  <h2>Brands. Influencers. Accountability.</h2>
-  <p>Leave and read reviews. Take legal action. Know who to trust in the digital space.</p>
-</section>
+  <section class="hero">
+    <h2>Real Reviews. Real Threads.</h2>
+    <p>Discover honest reviews from shoppers and small businesses.</p>
+    <a href="#" class="cta-button">Browse Reviews</a>
+  </section>
 
-<section class="panel">
-  <h2>Powered by Community</h2>
-  <p>Thread HQ is built by real people with real stories. We amplify your voice and your truth.</p>
-</section>
-    <section class="panel" data-aos="fade-up">
-  <h2>Transparency over Trends</h2>
-  <p>We’re not just another review site...</p>
-</section>
+  <footer>
+    <p>&copy; 2025 Thread HQ. All rights reserved.</p>
+  </footer>
 
-<section class="panel alt" data-aos="fade-up">
-  <h2>Brands. Influencers. Accountability.</h2>
-  <p>Leave and read reviews...</p>
-</section>
-
-<section class="panel" data-aos="fade-up">
-  <h2>Powered by Community</h2>
-  <p>Thread HQ is built by real people...</p>
-</section>
-    <div class="nav">
-      <a href="reviews.html">REVIEWS</a>
-      <a href="legal.html">LEGAL</a>
-      <a href="about.html">ABOUT</a>
-    </div>
-  </div>
-  <script>
-  const stickyNav = document.querySelector('.sticky-nav');
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-      stickyNav.classList.add('show');
-    } else {
-      stickyNav.classList.remove('show');
-    }
-  });
-</script>
-  <!-- AOS JS -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 800,
-    once: true
-  });
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
