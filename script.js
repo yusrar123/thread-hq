@@ -27,3 +27,26 @@ document.addEventListener("DOMContentLoaded", function () {
     form.reset(); // clear form
   });
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const reviews = document.querySelectorAll(".review-card");
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const filter = button.getAttribute("data-filter");
+
+      filterButtons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      reviews.forEach(card => {
+        const type = card.getAttribute("data-type");
+
+        if (filter === "all" || filter === type) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  });
+});
