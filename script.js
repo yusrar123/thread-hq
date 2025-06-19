@@ -47,4 +47,29 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const reviewGrid = document.getElementById("reviewGrid");
+
+  if (reviewGrid) {
+    fetch("https://sheetdb.io/api/v1/YOUR_API_ID")
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((review) => {
+          const card = document.createElement("div");
+          card.classList.add("review-card");
+          card.setAttribute("data-type", review.type.toLowerCase());
+
+          card.innerHTML = `
+            <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+            <p>“${review.review}”</p>
+          `;
+
+          reviewGrid.appendChild(card);
+        });
+      })
+      .catch((err) => {
+        console.error("Error loading reviews:", err);
+      });
+  }
+});
 
