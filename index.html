@@ -45,22 +45,22 @@
   <section class="submit-review">
   <div class="container">
     <h2 class="section-title">Submit a Review</h2>
-    <form class="review-form">
-      <label for="type">Review Type:</label>
-      <select id="type" name="type" required>
-        <option value="">Select One</option>
-        <option value="brand">Brand</option>
-        <option value="influencer">Influencer</option>
-      </select>
+    <form class="review-form" id="reviewForm">
+  <label for="type">Review Type:</label>
+  <select id="type" name="type" required>
+    <option value="">Select One</option>
+    <option value="brand">Brand</option>
+    <option value="influencer">Influencer</option>
+  </select>
 
-      <label for="name">Brand or Influencer Name:</label>
-      <input type="text" id="name" name="name" required placeholder="e.g. Zara or @scammerinfluencer" />
+  <label for="name">Brand or Influencer Name:</label>
+  <input type="text" id="name" name="name" required placeholder="e.g. Zara or @username" />
 
-      <label for="review">Your Review:</label>
-      <textarea id="review" name="review" rows="5" required placeholder="Write your honest experience here..."></textarea>
+  <label for="review">Your Review:</label>
+  <textarea id="review" name="review" rows="5" required placeholder="Write your honest experience here..."></textarea>
 
-      <button type="submit">Submit Review</button>
-    </form>
+  <button type="submit">Submit Review</button>
+</form>
   </div>
 </section>
   <footer>
