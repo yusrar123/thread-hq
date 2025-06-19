@@ -16,37 +16,35 @@ document.getElementById('review-form').addEventListener('submit', function(e) {
   this.reset();
 });
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector(".review-form");
+  const form = document.getElementById("reviewForm");
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // prevent real submission
+    e.preventDefault();
 
-    // You can add real saving here later
-    alert("✅ Thank you! Your review has been submitted.");
+    const data = {
+      data: {
+        type: form.type.value,
+        name: form.name.value,
+        review: form.review.value,
+      },
+    };
 
-    form.reset(); // clear form
-  });
-});
-document.addEventListener("DOMContentLoaded", function () {
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  const reviews = document.querySelectorAll(".review-card");
-
-  filterButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      const filter = button.getAttribute("data-filter");
-
-      filterButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      reviews.forEach(card => {
-        const type = card.getAttribute("data-type");
-
-        if (filter === "all" || filter === type) {
-          card.style.display = "block";
-        } else {
-          card.style.display = "none";
-        }
+    fetch("https://sheetdb.io/api/v1/YOUR_API_ID", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        alert("✅ Thank you! Your review was submitted.");
+        form.reset();
+      })
+      .catch((error) => {
+        alert("❌ Something went wrong. Please try again.");
+        console.error(error);
       });
-    });
   });
 });
+
