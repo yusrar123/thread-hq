@@ -20,9 +20,31 @@ body {
 }
 
 .hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 5rem 2rem;
-  background: #f8f9fa;
+  background-color: #ffffff;
+  padding: 0 2rem;
+}
+
+.hero-inner {
+  max-width: 700px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: #111;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.6;
 }
 
 .hero h2 {
