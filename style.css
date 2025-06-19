@@ -48,7 +48,7 @@ body {
   font-weight: 500;
   color: #111;
   text-decoration: none;
-  position: relative;
+  position: relative; /* ← required */
   transition: color 0.2s ease;
 }
 
