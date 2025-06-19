@@ -1,21 +1,44 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #fefefe;
-  color: #333;
-  padding: 20px;
   margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
 }
 
-header {
-  background: #111;
-  color: white;
-  padding: 30px;
-  text-align: center;
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeIn 2s ease-in forwards;
+}
+
+#typing-text {
+  font-size: 1.2rem;
+  color: #ccc;
 }
 
 footer {
-  text-align: center;
-  margin-top: 40px;
-  font-size: 0.9em;
-  color: #888;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  font-size: 0.8rem;
+  color: #666;
 }
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
