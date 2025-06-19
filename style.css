@@ -73,4 +73,18 @@ footer {
 .navbar a:hover {
   color: #ccc;
 }
+.scroll-down {
+  background-color: #111;
+  padding: 100px 20px;
+}
+
+.scroll-down h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.scroll-down p {
+  font-size: 1rem;
+  color: #ccc;
+}
 
