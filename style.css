@@ -119,4 +119,30 @@ body {
 .nav-right a:hover::after {
   transform: scaleX(1);
 }
+.panel {
+  padding: 8rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.panel h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1px;
+}
+
+.panel p {
+  font-size: 1.2rem;
+  color: #444;
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.panel.alt {
+  background-color: #f9f9f9;
+  padding: 10rem 2rem;
+}
 
