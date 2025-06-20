@@ -192,3 +192,26 @@ footer {
   background-color: #000;
   color: white;
 }
+.filter-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.name-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: #eee;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.name-btn.active,
+.name-btn:hover {
+  background-color: #000;
+  color: white;
+}
