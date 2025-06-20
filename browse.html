@@ -95,9 +95,14 @@
 
       function renderReviewsByName(name) {
   const filtered = allReviews.filter((r) => r.name.trim().toLowerCase() === name.trim().toLowerCase());
+
+  console.log("Clicked Name:", name);
+  console.log("Matching reviews:", filtered);
+
   reviewGrid.innerHTML = "";
   displayCards(filtered);
 }
+
 
       function displayCards(reviews) {
         if (reviews.length === 0) {
