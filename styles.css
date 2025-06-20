@@ -1,0 +1,162 @@
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #fff;
+  color: #111;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Layout */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  display: inline-block;
+  background: #111;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.cta-button:hover {
+  background: #333;
+}
+
+/* Info Section */
+.info {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.info h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Submit Section */
+.form-section {
+  padding: 3rem 0;
+}
+
+.form-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #111;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #333;
+}
+
+/* Browse Preview */
+.browse-preview {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.browse-preview h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.browse-button {
+  display: inline-block;
+  background: #f4f4f4;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid #ccc;
+  transition: background 0.2s ease;
+}
+
+.browse-button:hover {
+  background: #eaeaea;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.9rem;
+  color: #777;
+}
