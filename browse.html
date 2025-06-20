@@ -6,8 +6,7 @@
     <title>Browse Reviews | Thread HQ</title>
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
-    <!-- AOS Animation CSS -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
@@ -22,47 +21,25 @@
 
       <main>
         <section class="browse-hero" data-aos="fade-up">
-<div class="filter-buttons" data-aos="fade-up" data-aos-delay="100">
-
-        <section class="browse-hero">
           <h1>All Reviews</h1>
           <p>See honest reviews from the community.</p>
         </section>
 
-        <div class="filter-buttons">
+        <div class="filter-buttons" data-aos="fade-up" data-aos-delay="100">
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="brand">Brands</button>
           <button class="filter-btn" data-filter="influencer">Influencers</button>
         </div>
 
-        <div class="filter-buttons">
-  <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="brand">Brands</button>
-  <button class="filter-btn" data-filter="influencer">Influencers</button>
-</div>
-<section class="brand-directory">
-  <h2>Browse by Name</h2>
-  <div class="name-buttons" id="nameButtons">
-    <!-- Names will be inserted here automatically -->
-  </div>
-</section>
+        <section class="brand-directory" data-aos="fade-up" data-aos-delay="200">
+          <h2>Browse by Name</h2>
+          <div class="name-buttons" id="nameButtons">
+            <!-- Brand/influencer names will be injected here -->
+          </div>
+        </section>
 
-<div class="review-grid" id="reviewGrid">
-  <!-- Reviews from Google Sheets will load here -->
-</div>
-
-          <div class="review-card" data-type="influencer">
-            <h3>Influencer: @fakecollab</h3>
-            <p>“Never paid after posting our product.”</p>
-          </div>
-          <div class="review-card" data-type="brand">
-            <h3>Brand: Shein</h3>
-            <p>“Product didn’t match the description at all.”</p>
-          </div>
-          <div class="review-card" data-type="influencer">
-            <h3>Influencer: @scammerqueen</h3>
-            <p>“Took free items, ghosted us.”</p>
-          </div>
+        <div class="review-grid" id="reviewGrid" data-aos="fade-up" data-aos-delay="300">
+          <!-- Real reviews will load here -->
         </div>
       </main>
 
@@ -72,92 +49,90 @@
     </div>
 
     <script>
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  const reviewGrid = document.getElementById("reviewGrid");
-  const nameButtons = document.getElementById("nameButtons");
-  let allReviews = [];
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      const reviewGrid = document.getElementById("reviewGrid");
+      const nameButtons = document.getElementById("nameButtons");
+      let allReviews = [];
 
-  // Fetch reviews from SheetDB
-  fetch("https://sheetdb.io/api/v1/YOUR_API_ID")
-    .then((res) => res.json())
-    .then((data) => {
-      allReviews = data;
-      renderNameButtons();
-      renderReviews("all");
-    });
+      fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo") // ✅ Use your actual API ID
+        .then((res) => res.json())
+        .then((data) => {
+          allReviews = data;
+          renderNameButtons();
+          renderReviews("all");
+        });
 
-  function renderNameButtons() {
-    const uniqueNames = [...new Set(allReviews.map((r) => r.name.trim()))].sort();
+      function renderNameButtons() {
+        const uniqueNames = [...new Set(allReviews.map((r) => r.name.trim()))].sort();
 
-    uniqueNames.forEach((name) => {
-      const btn = document.createElement("button");
-      btn.classList.add("name-btn");
-      btn.textContent = name;
-      btn.setAttribute("data-name", name.toLowerCase());
+        nameButtons.innerHTML = ""; // clear previous in case of reload
 
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".name-btn").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderReviewsByName(name);
+        uniqueNames.forEach((name) => {
+          const btn = document.createElement("button");
+          btn.classList.add("name-btn");
+          btn.textContent = name;
+          btn.setAttribute("data-name", name.toLowerCase());
+
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".name-btn").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderReviewsByName(name);
+          });
+
+          nameButtons.appendChild(btn);
+        });
+      }
+
+      function renderReviews(type) {
+        reviewGrid.innerHTML = "";
+
+        const filtered = type === "all"
+          ? allReviews
+          : allReviews.filter((r) => r.type.toLowerCase() === type);
+
+        displayCards(filtered);
+      }
+
+      function renderReviewsByName(name) {
+        const filtered = allReviews.filter((r) => r.name.toLowerCase() === name.toLowerCase());
+        reviewGrid.innerHTML = "";
+        displayCards(filtered);
+      }
+
+      function displayCards(reviews) {
+        if (reviews.length === 0) {
+          reviewGrid.innerHTML = "<p>No reviews found.</p>";
+          return;
+        }
+
+        reviews.forEach((review) => {
+          const card = document.createElement("div");
+          card.classList.add("review-card");
+          card.setAttribute("data-type", review.type);
+
+          card.innerHTML = `
+            <div data-aos="fade-up">
+              <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+              <p>“${review.review}”</p>
+            </div>
+          `;
+
+          reviewGrid.appendChild(card);
+        });
+
+        AOS.refresh(); // re-run animations on new content
+      }
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderReviews(btn.getAttribute("data-filter"));
+        });
       });
+    </script>
 
-      nameButtons.appendChild(btn);
-    });
-  }
-
-  function renderReviews(filter) {
-    reviewGrid.innerHTML = "";
-
-    const filtered = filter === "all"
-      ? allReviews
-      : allReviews.filter((r) => r.type.toLowerCase() === filter);
-
-    displayCards(filtered);
-  }
-
-  function renderReviewsByName(name) {
-    const filtered = allReviews.filter((r) => r.name.toLowerCase() === name.toLowerCase());
-    reviewGrid.innerHTML = "";
-    displayCards(filtered);
-  }
-
-  function displayCards(reviews) {
-    if (reviews.length === 0) {
-      reviewGrid.innerHTML = "<p>No reviews found.</p>";
-      return;
-    }
-
-    reviews.forEach((review) => {
-      const card = document.createElement("div");
-      card.classList.add("review-card");
-      card.setAttribute("data-type", review.type);
-
-      card.innerHTML = `
-  <div data-aos="fade-up">
-    <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-    <p>“${review.review}”</p>
-  </div>
-`;
-
-
-      reviewGrid.appendChild(card);
-    });
-  }
-
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderReviews(btn.getAttribute("data-filter"));
-    });
-  });
-</script>
-    
-<!-- AOS Animation JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
   </body>
 </html>
