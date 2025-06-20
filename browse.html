@@ -21,6 +21,9 @@
       </header>
 
       <main>
+        <section class="browse-hero" data-aos="fade-up">
+<div class="filter-buttons" data-aos="fade-up" data-aos-delay="100">
+
         <section class="browse-hero">
           <h1>All Reviews</h1>
           <p>See honest reviews from the community.</p>
@@ -130,9 +133,12 @@
       card.setAttribute("data-type", review.type);
 
       card.innerHTML = `
-        <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-        <p>“${review.review}”</p>
-      `;
+  <div data-aos="fade-up">
+    <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+    <p>“${review.review}”</p>
+  </div>
+`;
+
 
       reviewGrid.appendChild(card);
     });
