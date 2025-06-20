@@ -166,3 +166,25 @@ footer {
   font-size: 0.9rem;
   color: #777;
 }
+.name-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.name-btn {
+  background: #f4f4f4;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.name-btn:hover,
+.name-btn.active {
+  background: #111;
+  color: #fff;
+}
