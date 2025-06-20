@@ -94,10 +94,10 @@
       }
 
       function renderReviewsByName(name) {
-        const filtered = allReviews.filter((r) => r.name.toLowerCase() === name.toLowerCase());
-        reviewGrid.innerHTML = "";
-        displayCards(filtered);
-      }
+  const filtered = allReviews.filter((r) => r.name.trim().toLowerCase() === name.trim().toLowerCase());
+  reviewGrid.innerHTML = "";
+  displayCards(filtered);
+}
 
       function displayCards(reviews) {
         if (reviews.length === 0) {
