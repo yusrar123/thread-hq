@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thread HQ</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">Thread HQ</div>
+        <nav>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#submit">Submit</a>
+          <a href="#browse">Browse</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <h1>Review Brands.<br />Expose Scams.<br />Empower Creators.</h1>
+          <p>Honest reviews by the public & small businesses.</p>
+          <a href="#submit" class="cta-button">Submit a Review</a>
+        </section>
+
+        <section id="how-it-works" class="info">
+          <h2>How It Works</h2>
+          <p>
+            Thread HQ is where shoppers post real reviews about brands & small businesses
+            report bad experiences with influencers. Our goal? Total transparency.
+          </p>
+        </section>
+
+        <section id="submit" class="form-section">
+          <h2>Submit a Review</h2>
+          <form id="reviewForm">
+            <label for="type">Review Type</label>
+            <select id="type" name="type" required>
+              <option value="">Choose</option>
+              <option value="brand">Brand</option>
+              <option value="influencer">Influencer</option>
+            </select>
+
+            <label for="name">Name of Brand or Influencer</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="review">Your Review</label>
+            <textarea id="review" name="review" rows="5" required></textarea>
+
+            <button type="submit">Submit</button>
+          </form>
+        </section>
+
+        <section id="browse" class="browse-preview">
+          <h2>Browse Reviews</h2>
+          <p>
+            See what people are saying about brands and influencers.
+          </p>
+          <a href="browse.html" class="browse-button">View All Reviews</a>
+        </section>
+      </main>
+
+      <footer>
+        <p>&copy; 2025 Thread HQ. Built for honesty.</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
