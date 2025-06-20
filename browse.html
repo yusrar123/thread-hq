@@ -74,10 +74,10 @@
           btn.setAttribute("data-name", name);
 
 btn.addEventListener("click", () => {
-  document.querySelectorAll(".name-btn").forEach((b) => b.classList.remove("active"));
-  btn.classList.add("active");
-  renderReviewsByName(btn.getAttribute("data-name"));
+  const name = btn.getAttribute("data-name");
+  window.location.href = `profile.html?name=${encodeURIComponent(name)}`;
 });
+
 
           nameButtons.appendChild(btn);
         });
