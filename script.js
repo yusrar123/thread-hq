@@ -1,4 +1,4 @@
-// Typing effect on homepage
+// Typing animation
 const text = "Review brands. Expose scams. Empower creators.";
 let i = 0;
 
@@ -9,12 +9,16 @@ function typeWriter() {
     setTimeout(typeWriter, 50);
   }
 }
-
 window.onload = typeWriter;
 
-// Handle form submission to SheetDB (Google Sheets)
+// Submit review to SheetDB
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("reviewForm");
+
+  if (!form) {
+    console.error("❌ Form with ID 'reviewForm' not found.");
+    return;
+  }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
