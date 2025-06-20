@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Browse Reviews | Thread HQ</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo"><a href="index.html">Thread HQ</a></div>
+        <nav>
+          <a href="index.html#how-it-works">How It Works</a>
+          <a href="index.html#submit">Submit</a>
+          <a href="browse.html" class="active">Browse</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="browse-hero">
+          <h1>All Reviews</h1>
+          <p>See honest reviews from the community.</p>
+        </section>
+
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="brand">Brands</button>
+          <button class="filter-btn" data-filter="influencer">Influencers</button>
+        </div>
+
+        <div class="review-grid" id="reviewGrid">
+          <!-- Sample Reviews -->
+          <div class="review-card" data-type="brand">
+            <h3>Brand: Zara</h3>
+            <p>“Great quality and fast shipping.”</p>
+          </div>
+          <div class="review-card" data-type="influencer">
+            <h3>Influencer: @fakecollab</h3>
+            <p>“Never paid after posting our product.”</p>
+          </div>
+          <div class="review-card" data-type="brand">
+            <h3>Brand: Shein</h3>
+            <p>“Product didn’t match the description at all.”</p>
+          </div>
+          <div class="review-card" data-type="influencer">
+            <h3>Influencer: @scammerqueen</h3>
+            <p>“Took free items, ghosted us.”</p>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>&copy; 2025 Thread HQ. Built for transparency.</p>
+      </footer>
+    </div>
+
+    <script>
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      const reviews = document.querySelectorAll(".review-card");
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const filter = btn.getAttribute("data-filter");
+
+          reviews.forEach((card) => {
+            if (filter === "all" || card.getAttribute("data-type") === filter) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
