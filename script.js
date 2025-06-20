@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     };
 
-    fetch("https://sheetdb.io/api/v1/gan8vuamea1tj, {
+    fetch("https://sheetdb.io/api/v1/7r5u56np3okjq, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
