@@ -71,13 +71,13 @@
           const btn = document.createElement("button");
           btn.classList.add("name-btn");
           btn.textContent = name;
-          btn.setAttribute("data-name", name.toLowerCase());
+          btn.setAttribute("data-name", name);
 
-          btn.addEventListener("click", () => {
-            document.querySelectorAll(".name-btn").forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            renderReviewsByName(name);
-          });
+btn.addEventListener("click", () => {
+  document.querySelectorAll(".name-btn").forEach((b) => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderReviewsByName(btn.getAttribute("data-name"));
+});
 
           nameButtons.appendChild(btn);
         });
