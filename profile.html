@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile | Thread HQ</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo"><a href="index.html">Thread HQ</a></div>
+      <nav>
+        <a href="index.html#how-it-works">How It Works</a>
+        <a href="index.html#submit">Submit</a>
+        <a href="browse.html">Browse</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="profile-header">
+        <h1 id="profileName">Loading...</h1>
+        <p id="reviewCount"></p>
+      </section>
+
+      <div class="review-grid" id="profileReviews">
+        <!-- Reviews will load here -->
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Thread HQ. Built for transparency.</p>
+    </footer>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get("name");
+
+    document.getElementById("profileName").textContent = name;
+
+    fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
+      .then(res => res.json())
+      .then(data => {
+        const filtered = data.filter(r => r.name.trim().toLowerCase() === name.trim().toLowerCase());
+        
+        document.getElementById("reviewCount").textContent =
+          filtered.length + " review(s) found";
+
+        if (filtered.length === 0) {
+          document.getElementById("profileReviews").innerHTML = "<p>No reviews yet.</p>";
+        } else {
+          filtered.forEach(review => {
+            const card = document.createElement("div");
+            card.classList.add("review-card");
+            card.innerHTML = `
+              <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+              <p>“${review.review}”</p>
+            `;
+            document.getElementById("profileReviews").appendChild(card);
+          });
+        }
+      });
+  </script>
+</body>
+</html>
