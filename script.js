@@ -48,28 +48,85 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("reviewForm");
+
+  // Form submission to Google Sheets
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const data = {
+        data: {
+          type: form.type.value,
+          name: form.name.value,
+          review: form.review.value,
+        },
+      };
+
+      fetch("https://sheetdb.io/api/v1/YOUR_API_ID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          alert("✅ Thank you! Your review was submitted.");
+          form.reset();
+        })
+        .catch((error) => {
+          alert("❌ Something went wrong. Please try again.");
+          console.error(error);
+        });
+    });
+  }
+
+  // ========= 🧠 NEW FILTERABLE REVIEW SECTION CODE ========= //
+
   const reviewGrid = document.getElementById("reviewGrid");
+  const nameButtons = document.querySelectorAll(".name-btn");
+
+  let allReviews = [];
 
   if (reviewGrid) {
     fetch("https://sheetdb.io/api/v1/YOUR_API_ID")
       .then((response) => response.json())
       .then((data) => {
-        data.forEach((review) => {
-          const card = document.createElement("div");
-          card.classList.add("review-card");
-          card.setAttribute("data-type", review.type.toLowerCase());
-
-          card.innerHTML = `
-            <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-            <p>“${review.review}”</p>
-          `;
-
-          reviewGrid.appendChild(card);
-        });
-      })
-      .catch((err) => {
-        console.error("Error loading reviews:", err);
+        allReviews = data;
+        renderReviews("all");
       });
   }
+
+  function renderReviews(filterName) {
+    reviewGrid.innerHTML = "";
+
+    const filtered = filterName === "all"
+      ? allReviews
+      : allReviews.filter((r) => r.name.toLowerCase() === filterName.toLowerCase());
+
+    filtered.forEach((review) => {
+      const card = document.createElement("div");
+      card.classList.add("review-card");
+      card.setAttribute("data-type", review.type);
+
+      card.innerHTML = `
+        <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+        <p>“${review.review}”</p>
+      `;
+
+      reviewGrid.appendChild(card);
+    });
+  }
+
+  nameButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      nameButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filterName = btn.getAttribute("data-name");
+      renderReviews(filterName);
+    });
+  });
 });
+
 
