@@ -61,25 +61,53 @@
     </div>
 
     <script>
-      const filterButtons = document.querySelectorAll(".filter-btn");
-      const reviews = document.querySelectorAll(".review-card");
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const reviewGrid = document.getElementById("reviewGrid");
+  let allReviews = [];
 
-      filterButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          filterButtons.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
+  // Fetch reviews from Google Sheets via SheetDB
+  fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
+    .then((res) => res.json())
+    .then((data) => {
+      allReviews = data;
+      renderReviews("all");
+    });
 
-          const filter = btn.getAttribute("data-filter");
+  function renderReviews(type) {
+    reviewGrid.innerHTML = "";
 
-          reviews.forEach((card) => {
-            if (filter === "all" || card.getAttribute("data-type") === filter) {
-              card.style.display = "block";
-            } else {
-              card.style.display = "none";
-            }
-          });
-        });
-      });
-    </script>
+    const filtered = type === "all"
+      ? allReviews
+      : allReviews.filter((r) => r.type.toLowerCase() === type);
+
+    if (filtered.length === 0) {
+      reviewGrid.innerHTML = "<p>No reviews found.</p>";
+      return;
+    }
+
+    filtered.forEach((review) => {
+      const card = document.createElement("div");
+      card.classList.add("review-card");
+      card.setAttribute("data-type", review.type);
+
+      card.innerHTML = `
+        <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+        <p>“${review.review}”</p>
+      `;
+
+      reviewGrid.appendChild(card);
+    });
+  }
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const type = btn.getAttribute("data-filter");
+      renderReviews(type);
+    });
+  });
+</script>
+
   </body>
 </html>
