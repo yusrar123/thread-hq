@@ -1,3 +1,4 @@
+// 🧠 Typing animation
 const text = "Review brands. Expose scams. Empower creators.";
 let i = 0;
 
@@ -10,47 +11,13 @@ function typeWriter() {
 }
 
 window.onload = typeWriter;
-document.getElementById('review-form').addEventListener('submit', function(e) {
-  e.preventDefault(); // stop form from refreshing page
-  alert('Thanks for submitting your review! We will check it soon.');
-  this.reset();
-});
+
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("reviewForm");
+  const reviewGrid = document.getElementById("reviewGrid");
+  const nameButtons = document.querySelectorAll(".name-btn");
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const data = {
-      data: {
-        type: form.type.value,
-        name: form.name.value,
-        review: form.review.value,
-      },
-    };
-
-    fetch("https://sheetdb.io/api/v1/gan8vuamea1tj", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        alert("✅ Thank you! Your review was submitted.");
-        form.reset();
-      })
-      .catch((error) => {
-        alert("❌ Something went wrong. Please try again.");
-        console.error(error);
-      });
-  });
-});
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("reviewForm");
-
-  // Form submission to Google Sheets
+  // ✅ 1. Handle form submission to Google Sheets
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -63,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       };
 
-      fetch("https://sheetdb.io/api/v1/https://sheetdb.io/api/v1/gan8vuamea1tj", {
+      fetch("https://sheetdb.io/api/v1/gan8vuamea1tj", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,19 +49,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ========= 🧠 NEW FILTERABLE REVIEW SECTION CODE ========= //
-
-  const reviewGrid = document.getElementById("reviewGrid");
-  const nameButtons = document.querySelectorAll(".name-btn");
-
+  // ✅ 2. Load and filter reviews from Google Sheets
   let allReviews = [];
 
   if (reviewGrid) {
-    fetch("https://sheetdb.io/api/v1/https://sheetdb.io/api/v1/gan8vuamea1tj")
+    fetch("https://sheetdb.io/api/v1/gan8vuamea1tj")
       .then((response) => response.json())
       .then((data) => {
         allReviews = data;
         renderReviews("all");
+      })
+      .catch((error) => {
+        console.error("❌ Failed to fetch reviews:", error);
       });
   }
 
@@ -119,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ✅ 3. Set up filter buttons
   nameButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       nameButtons.forEach((b) => b.classList.remove("active"));
@@ -128,5 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
 
 
