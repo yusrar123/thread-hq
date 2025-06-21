@@ -2,33 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Browse Reviews – Thread HQ</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
+
   <header>
-    <a href="index.html" class="logo">
-      <img src="logo.png" alt="Thread HQ Logo">
-    </a>
-    <h1>Browse by Name</h1>
+    <div class="logo">
+      <img src="logo.png" alt="Thread HQ logo" />
+    </div>
+    <h1>Browse by Brand</h1>
   </header>
 
- <main>
- <div class="search-sort">
-  <input type="text" id="searchInput" placeholder="Search brands…" />
-  <!-- ... -->
-</div>
-</main>
+  <main>
+    <div class="search-sort">
+      <input type="text" id="searchInput" placeholder="Search brands..." />
+      <select id="sortSelect">
+        <option value="alpha">Sort: A–Z</option>
+        <option value="rating">Sort: Top Rated</option>
+      </select>
+    </div>
 
+    <!-- 🔴 This must exist for renderBrands() to work -->
+    <div class="brand-cards" id="brandCards">
+      <!-- JavaScript inserts brand cards here -->
+    </div>
+  </main>
 
-  <footer>
-    &copy; 2025 Thread HQ. All rights reserved.
-  </footer>
-
+  <!-- ✅ Your script goes at the very end -->
   <script src="script.js"></script>
 </body>
 </html>
