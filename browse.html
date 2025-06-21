@@ -87,6 +87,7 @@ btn.addEventListener("click", () => {
 });
 
 
+
           nameButtons.appendChild(btn);
         });
       }
@@ -111,12 +112,11 @@ btn.addEventListener("click", () => {
   displayCards(filtered);
 }
 
-
-      const initials = review.name
+const initials = review.name
   .split(" ")
   .map(word => word[0].toUpperCase())
   .join("")
-  .substring(0, 2); // only take first 2 letters
+  .substring(0, 2);
 
 card.innerHTML = `
   <div class="review-content" data-aos="fade-up">
@@ -127,6 +127,7 @@ card.innerHTML = `
     </div>
   </div>
 `;
+
 
 
       filterButtons.forEach((btn) => {
