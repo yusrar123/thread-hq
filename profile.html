@@ -45,8 +45,8 @@
         .then((res) => res.json())
         .then((data) => {
           const filtered = data.filter((r) =>
-            r.name && r.name.trim().toLowerCase() === profileName.trim().toLowerCase()
-          );
+  r.name && r.name.trim().toLowerCase() === profileName.trim().toLowerCase()
+);
 
           const reviewGrid = document.getElementById("profileReviewGrid");
 
