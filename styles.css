@@ -318,4 +318,53 @@ footer {
   border-radius: 1rem;
   margin-bottom: 2rem;
 }
+.brand-cards {
+  padding: 2rem 0;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.brand-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.brand-card:hover {
+  transform: translateY(-5px);
+}
+
+.brand-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.brand-card .content {
+  padding: 1rem;
+}
+
+.brand-card h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.brand-card .tag {
+  background: #ffe6ea;
+  color: #0b8a3f;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 5px;
+}
 
