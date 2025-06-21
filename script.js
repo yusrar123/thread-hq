@@ -17,20 +17,21 @@ function getStars(rating) {
 }
 
 // Render brand cards
-function renderBrands(data) {
-  const brandGroups = {};
-
-  data.forEach(entry => {
-    const brand = entry.brand.trim();
-    if (!brandGroups[brand]) brandGroups[brand] = [];
-    brandGroups[brand].push(entry);
-  });
-
+function renderBrands(brandGroups, sortType = "alpha") {
   const container = document.getElementById("brandCards");
   container.innerHTML = "";
   allBrandCards = [];
 
-  Object.keys(brandGroups).sort().forEach(brand => {
+  const sortedBrands = Object.keys(brandGroups).sort((a, b) => {
+    if (sortType === "rating") {
+      const aAvg = calculateAverage(brandGroups[a]);
+      const bAvg = calculateAverage(brandGroups[b]);
+      return bAvg - aAvg;
+    }
+    return a.localeCompare(b);
+  });
+
+  sortedBrands.forEach(brand => {
     const reviews = brandGroups[brand];
     const avg = calculateAverage(reviews);
     const stars = getStars(avg);
@@ -52,6 +53,7 @@ function renderBrands(data) {
     container.appendChild(card);
   });
 }
+
 
 let allBrandCards = [];
 let allBrandData = []; // full grouped data for sorting
