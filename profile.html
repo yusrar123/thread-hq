@@ -111,7 +111,7 @@
           }
 
           // Load brand image
-          const imgURL = reviews[0].image?.trim();
+const imgURL = reviews[0].image ? reviews[0].image.trim() : "";
           if (imgURL && imgURL !== "") {
             const imgEl = document.getElementById("brandImage");
             imgEl.src = imgURL;
