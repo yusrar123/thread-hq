@@ -4,84 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Thread HQ</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #F6F4F0;
-      font-family: 'Georgia', serif;
-      color: #333;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background-color: #F6F4F0;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .logo {
-      font-family: 'Georgia', serif;
-      font-size: 32px;
-      color: #9B3731;
-    }
-
-    .logo span {
-      font-family: 'Cursive', serif;
-      font-size: 18px;
-      margin-left: 5px;
-    }
-
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #9B3731;
-      font-weight: bold;
-    }
-
-    .hero {
-      padding: 80px 40px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      color: #9B3731;
-    }
-
-    .hero p {
-      font-size: 20px;
-      color: #444;
-      max-width: 600px;
-      margin: 20px auto 0;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      color: #aaa;
-      font-size: 14px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <header>
-    <div class="logo">THREAD <span>hq</span></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="browse.html">Browse</a>
-      <a href="submit.html">Submit</a>
-    </nav>
-  </header>
+  <div class="container">
+    <header>
+      <img src="Black White Minimal Simple Modern Creative Studio Ego Logo.png" alt="Thread HQ Logo" class="logo" />
+      <nav>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#submit">Submit</a>
+        <a href="browse.html">Browse</a>
+      </nav>
+    </header>
 
-  <section class="hero">
-    <h1>Welcome to Thread HQ</h1>
-    <p>Review brands. Expose scams. Empower creators. Built for transparency and trust.</p>
-  </section>
+    <main>
+      <section class="hero">
+        <h1>Honest Reviews, All in One Place.</h1>
+        <p>Explore experiences shared by real people — about brands and influencers that matter.</p>
+        <a href="browse.html" class="cta">Start Browsing</a>
+      </section>
 
-  <footer>
-    &copy; 2025 Thread HQ. Built for transparency.
-  </footer>
+      <section id="how-it-works">
+        <h2>How It Works</h2>
+        <p>Share your experience. Help others make informed decisions.</p>
+      </section>
+
+      <section id="submit">
+        <h2>Submit a Review</h2>
+        <p>Coming soon.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Thread HQ. Built for transparency.</p>
+    </footer>
+  </div>
 </body>
 </html>
