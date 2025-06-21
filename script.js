@@ -28,6 +28,7 @@ function renderBrands(data) {
 
   const container = document.getElementById("brandCards");
   container.innerHTML = "";
+  allBrandCards = [];
 
   Object.keys(brandGroups).sort().forEach(brand => {
     const reviews = brandGroups[brand];
@@ -37,8 +38,8 @@ function renderBrands(data) {
     const card = document.createElement("a");
     card.className = "brand-card";
     card.href = `profile.html?brand=${encodeURIComponent(brand)}`;
+    card.setAttribute("data-brand", brand.toLowerCase());
 
-    // Replace with actual brand images later if needed
     card.innerHTML = `
       <img src="https://via.placeholder.com/400x160.png?text=${encodeURIComponent(brand)}" alt="${brand} Header">
       <div class="info">
@@ -47,9 +48,12 @@ function renderBrands(data) {
       </div>
     `;
 
+    allBrandCards.push(card);
     container.appendChild(card);
   });
 }
+
+let allBrandCards = [];
 
 // Fetch data from SheetDB
 fetch(API_URL)
@@ -60,3 +64,15 @@ fetch(API_URL)
   .catch(err => {
     console.error("Failed to load data", err);
   });
+document.getElementById("searchInput").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  const container = document.getElementById("brandCards");
+  container.innerHTML = "";
+
+  allBrandCards.forEach(card => {
+    const brand = card.getAttribute("data-brand");
+    if (brand.includes(query)) {
+      container.appendChild(card);
+    }
+  });
+});
