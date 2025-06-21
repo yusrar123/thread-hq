@@ -1,82 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile | Thread HQ</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-</head>
-<body>
-  <div class="container">
-    <header>
-      <div class="logo"><a href="index.html">Thread HQ</a></div>
-      <nav>
-        <a href="index.html#how-it-works">How It Works</a>
-        <a href="index.html#submit">Submit</a>
-        <a href="browse.html">Browse</a>
-      </nav>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profile | Thread HQ</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo"><a href="index.html">Thread HQ</a></div>
+        <nav>
+          <a href="index.html#how-it-works">How It Works</a>
+          <a href="index.html#submit">Submit</a>
+          <a href="browse.html">Browse</a>
+        </nav>
+      </header>
 
-    <main>
-      <section class="browse-hero" data-aos="fade-up">
-        <h1 id="profileTitle">Profile</h1>
-        <p>All reviews for this brand or influencer.</p>
-      </section>
+      <main>
+        <section class="browse-hero" data-aos="fade-up">
+          <h1 id="profileTitle">Profile</h1>
+          <p>All reviews for this brand or influencer.</p>
+        </section>
 
-      <div class="review-grid" id="reviewGrid" data-aos="fade-up" data-aos-delay="200">
-        <!-- Reviews will be inserted here -->
-      </div>
-    </main>
+        <div class="review-grid" id="profileReviewGrid" data-aos="fade-up" data-aos-delay="200">
+          <!-- Reviews will load here -->
+        </div>
+      </main>
 
-    <footer>
-      <p>&copy; 2025 Thread HQ. Built for transparency.</p>
-    </footer>
-  </div>
+      <footer>
+        <p>&copy; 2025 Thread HQ. Built for transparency.</p>
+      </footer>
+    </div>
 
-  <script>
-    const reviewGrid = document.getElementById("reviewGrid");
-    const titleEl = document.getElementById("profileTitle");
-    const urlParams = new URLSearchParams(window.location.search);
-    const name = urlParams.get("name");
-    let allReviews = [];
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const profileName = urlParams.get("name");
 
-    titleEl.textContent = name ? `Reviews for ${name}` : "Profile";
+      document.getElementById("profileTitle").textContent = profileName;
 
-    fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
-      .then((res) => res.json())
-      .then((data) => {
-        allReviews = data;
-        const filtered = allReviews.filter((r) => r.name.trim().toLowerCase() === name.trim().toLowerCase());
-        displayCards(filtered);
-      });
+      fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
+        .then((res) => res.json())
+        .then((data) => {
+          const filtered = data.filter((r) =>
+            r.name && r.name.trim().toLowerCase() === profileName.trim().toLowerCase()
+          );
 
-    function displayCards(reviews) {
-      if (reviews.length === 0) {
-        reviewGrid.innerHTML = "<p>No reviews found for this name.</p>";
-        return;
-      }
+          const reviewGrid = document.getElementById("profileReviewGrid");
 
-      reviews.forEach((review) => {
-        const card = document.createElement("div");
-        card.classList.add("review-card");
-        card.setAttribute("data-type", review.type);
+          if (filtered.length === 0) {
+            reviewGrid.innerHTML = "<p>No reviews found for this profile.</p>";
+            return;
+          }
 
-        card.innerHTML = `
-          <div data-aos="fade-up">
-            <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-            <p>“${review.review}”</p>
-          </div>
-        `;
-        reviewGrid.appendChild(card);
-      });
+          filtered.forEach((review) => {
+            const card = document.createElement("div");
+            card.classList.add("review-card");
+            card.setAttribute("data-type", review.type);
 
-      AOS.refresh();
-    }
-  </script>
+            const initials = review.name
+              .split(" ")
+              .map((word) => word[0].toUpperCase())
+              .join("")
+              .substring(0, 2);
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init();</script>
-</body>
+            card.innerHTML = `
+              <div class="review-content" data-aos="fade-up">
+                <div class="avatar">${initials}</div>
+                <div>
+                  <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+                  <p>“${review.review}”</p>
+                  ${
+                    review.rating
+                      ? `<div class="stars">Rating: ${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</div>`
+                      : ""
+                  }
+                </div>
+              </div>
+            `;
+
+            reviewGrid.appendChild(card);
+          });
+
+          AOS.refresh(); // if you're using AOS animations
+        });
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+  </body>
 </html>
