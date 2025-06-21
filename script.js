@@ -41,13 +41,18 @@ function renderBrands(brandGroups, sortType = "alpha") {
     card.href = `profile.html?brand=${encodeURIComponent(brand)}`;
     card.setAttribute("data-brand", brand.toLowerCase());
 
-    card.innerHTML = `
-      <img src="https://via.placeholder.com/400x160.png?text=${encodeURIComponent(brand)}" alt="${brand} Header">
-      <div class="info">
-        <h2>${brand}</h2>
-        <div class="star-display">${stars} (${avg})</div>
-      </div>
-    `;
+  const brandImage = reviews[0].image?.trim();
+const imageUrl = brandImage && brandImage !== "" 
+  ? brandImage 
+  : `https://via.placeholder.com/400x160.png?text=${encodeURIComponent(brand)}`;
+
+card.innerHTML = `
+  <img src="${imageUrl}" alt="${brand} Header">
+  <div class="info">
+    <h2>${brand}</h2>
+    <div class="star-display">${stars} (${avg})</div>
+  </div>
+`;
 
     allBrandCards.push(card);
     container.appendChild(card);
