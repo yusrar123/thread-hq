@@ -20,6 +20,9 @@
       </header>
 
       <main>
+        <!-- ✅ Header image section -->
+        <section class="profile-header-image" id="profileHeaderImage"></section>
+
         <section class="browse-hero" data-aos="fade-up">
           <h1 id="profileTitle">Profile</h1>
           <p>All reviews for this brand or influencer.</p>
@@ -41,13 +44,24 @@
 
       document.getElementById("profileTitle").textContent = profileName;
 
+      // ✅ Header image logic
+      const profileHeaderImage = document.getElementById("profileHeaderImage");
+
+      const brandImages = {
+        "Kulfi Beauty": "https://i.imgur.com/RKUzZsS.jpeg",
+        "FOR YOUR VIEWING PLEASURE": "https://i.imgur.com/7KVmKy7.jpeg",
+        "Nour Hammour": "https://i.imgur.com/k4cPUbO.jpeg"
+      };
+
+      if (brandImages[profileName]) {
+        profileHeaderImage.style.backgroundImage = `url(${brandImages[profileName]})`;
+      }
+
       fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
         .then((res) => res.json())
         .then((data) => {
           const clean = (str) => (str || "").trim().toLowerCase();
-
-const filtered = data.filter((r) => clean(r.name) === clean(profileName));
-
+          const filtered = data.filter((r) => clean(r.name) === clean(profileName));
 
           const reviewGrid = document.getElementById("profileReviewGrid");
 
@@ -85,7 +99,7 @@ const filtered = data.filter((r) => clean(r.name) === clean(profileName));
             reviewGrid.appendChild(card);
           });
 
-          AOS.refresh(); // if you're using AOS animations
+          AOS.refresh();
         });
     </script>
 
