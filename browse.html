@@ -123,12 +123,15 @@ btn.addEventListener("click", () => {
           card.classList.add("review-card");
           card.setAttribute("data-type", review.type);
 
-          card.innerHTML = `
-            <div data-aos="fade-up">
-              <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-              <p>“${review.review}”</p>
-            </div>
-          `;
+          const stars = "★".repeat(Number(review.rating)) + "☆".repeat(5 - Number(review.rating));
+
+card.innerHTML = `
+  <div data-aos="fade-up">
+    <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+    <p>“${review.review}”</p>
+    <div class="star-rating">${stars}</div>
+  </div>
+`;
 
           reviewGrid.appendChild(card);
         });
