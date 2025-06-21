@@ -54,6 +54,8 @@ function renderBrands(data) {
 }
 
 let allBrandCards = [];
+let allBrandData = []; // full grouped data for sorting
+
 
 // Fetch data from SheetDB
 fetch(API_URL)
