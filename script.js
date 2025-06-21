@@ -65,6 +65,45 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+function renderBrandCards(data) {
+  const cardGrid = document.getElementById("brandCardGrid");
+  cardGrid.innerHTML = "";
+
+  // Get unique brand/influencer entries
+  const uniqueMap = new Map();
+  data.forEach((r) => {
+    const key = r.name.trim().toLowerCase();
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, r);
+    }
+  });
+
+  uniqueMap.forEach((r) => {
+    const card = document.createElement("div");
+    card.className = "brand-card";
+
+    const imgURL = r.image || "https://via.placeholder.com/400x300?text=No+Image";
+
+    card.innerHTML = `
+      <img src="${imgURL}" alt="${r.name}" />
+      <div class="content">
+        <h3>${r.name}</h3>
+        ${
+          r.tag
+            ? `<div class="tag">${r.tag}</div>`
+            : ""
+        }
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      window.location.href = `profile.html?name=${encodeURIComponent(r.name)}`;
+    });
+
+    cardGrid.appendChild(card);
+  });
+}
+
 // Handle star rating selection
 document.addEventListener("DOMContentLoaded", function () {
   const stars = document.querySelectorAll(".star-rating span");
