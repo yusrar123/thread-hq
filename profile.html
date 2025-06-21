@@ -5,132 +5,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Brand Profile – Thread HQ</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
-    .profile-header {
+    body {
+      background-color: #F6F4F0;
+      color: #9B3731;
+      font-family: 'Georgia', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
       text-align: center;
-      padding: 40px 20px 20px;
+      padding: 30px 20px;
     }
 
-    .profile-header img {
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .brand-header {
       width: 100%;
-      max-height: 200px;
+      height: 200px;
       object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      background-color: #eee;
     }
 
-    .profile-header h1 {
-      font-size: 2.2rem;
+    .average-rating {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 10px 0;
     }
 
-    .profile-header .stars {
-      font-size: 1.4rem;
-      margin-top: 10px;
-    }
-
-    .reviews {
+    .reviews-section {
       max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 20px;
     }
 
-    .review {
-      background: #fff;
+    .review-card {
+      background: white;
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .review .rating {
-      color: #9B3731;
+    .star-display {
       font-size: 1.2rem;
       margin-bottom: 10px;
+      color: #9B3731;
     }
 
-    .review .text {
-      color: #333;
+    .no-reviews {
+      text-align: center;
+      font-style: italic;
+      margin-top: 50px;
+    }
+
+    a.back-link {
+      display: block;
+      text-align: center;
+      margin: 20px auto;
+      text-decoration: none;
+      color: #9B3731;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <a href="index.html" class="logo">
-      <img src="logo.png" alt="Thread HQ Logo">
-    </a>
+    <h1 id="brandName">Loading...</h1>
   </header>
 
-  <div class="profile-header" id="brandHeader">
-    <!-- Brand image, name, and avg rating go here -->
+  <img id="brandImage" class="brand-header" src="" alt="Brand Header Image" style="display: none;" />
+
+  <div class="average-rating" id="avgRating"></div>
+
+  <div class="reviews-section" id="reviewsContainer">
+    <!-- Reviews will go here -->
   </div>
 
-  <main>
-    <div class="reviews" id="reviewList">
-      <!-- Reviews will appear here -->
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2025 Thread HQ. All rights reserved.
-  </footer>
+  <a href="browse.html" class="back-link">← Back to Browse</a>
 
   <script>
     const API_URL = "https://sheetdb.io/api/v1/4a5jm1rk5creo";
-
     const urlParams = new URLSearchParams(window.location.search);
-    const brand = urlParams.get('brand');
+    const brand = urlParams.get("brand");
 
-    const brandHeader = document.getElementById("brandHeader");
-    const reviewList = document.getElementById("reviewList");
+    document.getElementById("brandName").textContent = brand ? brand : "Unknown Brand";
 
     if (!brand) {
-      brandHeader.innerHTML = "<p>Brand not found.</p>";
-      throw new Error("Brand not specified in URL.");
+      document.getElementById("reviewsContainer").innerHTML = "<p class='no-reviews'>No brand selected.</p>";
+    } else {
+      fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+          const reviews = data.filter(r => r.brand && r.brand.trim().toLowerCase() === brand.toLowerCase());
+
+          if (reviews.length === 0) {
+            document.getElementById("reviewsContainer").innerHTML = "<p class='no-reviews'>No reviews yet for this brand.</p>";
+            return;
+          }
+
+          // Load brand image
+          const imgURL = reviews[0].image?.trim();
+          if (imgURL && imgURL !== "") {
+            const imgEl = document.getElementById("brandImage");
+            imgEl.src = imgURL;
+            imgEl.style.display = "block";
+          }
+
+          // Calculate average rating
+          const avg = (reviews.reduce((acc, r) => acc + parseInt(r.rating), 0) / reviews.length).toFixed(1);
+          const stars = getStars(avg);
+          document.getElementById("avgRating").textContent = `Average Rating: ${stars} (${avg})`;
+
+          // Render reviews
+          const container = document.getElementById("reviewsContainer");
+          reviews.forEach(review => {
+            const card = document.createElement("div");
+            card.className = "review-card";
+            card.innerHTML = `
+              <div class="star-display">${getStars(review.rating)}</div>
+              <p>${review.review}</p>
+            `;
+            container.appendChild(card);
+          });
+        });
     }
 
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        const brandReviews = data.filter(entry => entry.brand.trim().toLowerCase() === brand.toLowerCase());
-
-        if (brandReviews.length === 0) {
-          brandHeader.innerHTML = `<h1>${brand}</h1><p>No reviews yet.</p>`;
-          return;
-        }
-
-        const average = (
-          brandReviews.reduce((sum, r) => sum + parseInt(r.rating), 0) / brandReviews.length
-        ).toFixed(1);
-
-        const stars = getStars(average);
-
-        brandHeader.innerHTML = `
-          <img src="https://via.placeholder.com/1000x200.png?text=${encodeURIComponent(brand)}" alt="${brand} Header">
-          <h1>${brand}</h1>
-          <div class="stars">${stars} (${average})</div>
-        `;
-
-        brandReviews.forEach(r => {
-          const card = document.createElement("div");
-          card.className = "review";
-          card.innerHTML = `
-            <div class="rating">${getStars(r.rating)}</div>
-            <div class="text">${r.review}</div>
-          `;
-          reviewList.appendChild(card);
-        });
-      });
-
     function getStars(rating) {
-      const full = Math.round(rating);
-      let out = "";
+      const fullStars = Math.round(rating);
+      let stars = "";
       for (let i = 1; i <= 5; i++) {
-        out += i <= full ? "★" : "☆";
+        stars += i <= fullStars ? "★" : "☆";
       }
-      return out;
+      return stars;
     }
   </script>
 </body>
