@@ -74,4 +74,21 @@ fetch(API_URL)
     allBrandData = brandGroups;
     renderBrands(brandGroups); // default to A-Z
   });
+document.getElementById("searchInput").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  const container = document.getElementById("brandCards");
+  container.innerHTML = "";
+
+  allBrandCards.forEach(card => {
+    const brand = card.getAttribute("data-brand");
+    if (brand.includes(query)) {
+      container.appendChild(card);
+    }
+  });
+});
+
+document.getElementById("sortSelect").addEventListener("change", function () {
+  const sortType = this.value;
+  renderBrands(allBrandData, sortType);
+});
 
