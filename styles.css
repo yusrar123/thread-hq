@@ -269,3 +269,8 @@ footer {
 .star-rating span.active ~ span {
   color: #f5a623;
 }
+.star-rating {
+  font-size: 1.2rem;
+  color: gold;
+  margin-top: 0.3rem;
+}
