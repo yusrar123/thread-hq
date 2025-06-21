@@ -63,3 +63,23 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+// Handle star rating selection
+document.addEventListener("DOMContentLoaded", function () {
+  const stars = document.querySelectorAll(".star-rating span");
+  const ratingInput = document.getElementById("rating");
+
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      const value = star.getAttribute("data-value");
+      ratingInput.value = value;
+
+      stars.forEach((s) => s.classList.remove("active"));
+      star.classList.add("active");
+      let sibling = star.previousElementSibling;
+      while (sibling) {
+        sibling.classList.add("active");
+        sibling = sibling.previousElementSibling;
+      }
+    });
+  });
+});
