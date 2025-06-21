@@ -112,32 +112,22 @@ btn.addEventListener("click", () => {
 }
 
 
-      function displayCards(reviews) {
-        if (reviews.length === 0) {
-          reviewGrid.innerHTML = "<p>No reviews found.</p>";
-          return;
-        }
-
-        reviews.forEach((review) => {
-          const card = document.createElement("div");
-          card.classList.add("review-card");
-          card.setAttribute("data-type", review.type);
-
-          const stars = "★".repeat(Number(review.rating)) + "☆".repeat(5 - Number(review.rating));
+      const initials = review.name
+  .split(" ")
+  .map(word => word[0].toUpperCase())
+  .join("")
+  .substring(0, 2); // only take first 2 letters
 
 card.innerHTML = `
-  <div data-aos="fade-up">
-    <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-    <p>“${review.review}”</p>
-    <div class="star-rating">${stars}</div>
+  <div class="review-content" data-aos="fade-up">
+    <div class="avatar">${initials}</div>
+    <div>
+      <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+      <p>“${review.review}”</p>
+    </div>
   </div>
 `;
 
-          reviewGrid.appendChild(card);
-        });
-
-        AOS.refresh(); // re-run animations on new content
-      }
 
       filterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
