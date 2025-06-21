@@ -34,12 +34,14 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("📤 Submitting review:", { type, name, review });
 
     const data = {
-      data: {
-        type,
-        name,
-        review,
-      },
-    };
+  data: {
+    type: document.getElementById("type").value,
+    name: document.getElementById("name").value,
+    review: document.getElementById("review").value,
+    rating: document.getElementById("rating").value, // ⭐ sending rating
+  },
+};
+
 
     fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo", {
       method: "POST",
