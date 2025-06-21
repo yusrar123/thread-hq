@@ -117,22 +117,6 @@ btn.addEventListener("click", () => {
           reviewGrid.innerHTML = "<p>No reviews found.</p>";
           return;
         }
-function renderReviewsByName(name) {
-  const filtered = allReviews.filter((r) => r.name.trim().toLowerCase() === name.trim().toLowerCase());
-  reviewGrid.innerHTML = "";
-  displayCards(filtered);
-}
-
-function handleSearch() {
-  const query = document.getElementById("searchInput").value.trim().toLowerCase();
-
-  const filtered = allReviews.filter((r) =>
-    r.name && r.name.toLowerCase().includes(query)
-  );
-
-  reviewGrid.innerHTML = "";
-  displayCards(filtered);
-}
 
         reviews.forEach((review) => {
           const card = document.createElement("div");
@@ -159,6 +143,16 @@ function handleSearch() {
           renderReviews(btn.getAttribute("data-filter"));
         });
       });
+      function handleSearch() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+
+  const filtered = allReviews.filter((r) =>
+    r.name && r.name.toLowerCase().includes(query)
+  );
+
+  reviewGrid.innerHTML = "";
+  displayCards(filtered);
+}
     </script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
