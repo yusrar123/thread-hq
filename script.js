@@ -43,28 +43,15 @@ document.addEventListener("DOMContentLoaded", function () {
 };
 
 
-    fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        console.log("📬 Response received from SheetDB:", res.status);
-        return res.json();
-      })
-      .then((resData) => {
-        alert("✅ Review submitted successfully!");
-        form.reset();
-        console.log("🎉 Submission success:", resData);
-      })
-      .catch((err) => {
-        alert("❌ Error submitting review. Try again.");
-        console.error("🚨 Submission failed:", err);
-      });
+    fetch("https://sheetdb.io/api/v1/YOUR_API_ID")
+  .then((res) => res.json())
+  .then((data) => {
+    allReviews = data;
+    renderNameButtons();
+    renderReviews("all");
+    renderBrandCards(data); // ⬅️ Add this
   });
-});
+
 function renderBrandCards(data) {
   const cardGrid = document.getElementById("brandCardGrid");
   cardGrid.innerHTML = "";
