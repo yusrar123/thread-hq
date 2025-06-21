@@ -61,6 +61,11 @@
         .then((res) => res.json())
         .then((data) => {
           const clean = (str) => (str || "").trim().toLowerCase();
+          const matchingProfile = data.find((r) => clean(r.name) === clean(profileName));
+
+if (matchingProfile && matchingProfile.profileImage) {
+  document.getElementById("profileHeaderImage").style.backgroundImage = `url('${matchingProfile.profileImage}')`;
+}
           const filtered = data.filter((r) => clean(r.name) === clean(profileName));
 
           const reviewGrid = document.getElementById("profileReviewGrid");
