@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit a Review – Thread HQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #F6F4F0;
+      color: #9B3731;
+      font-family: 'Playfair Display', serif;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .logo img {
+      width: 180px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #9B3731;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: inherit;
+    }
+
+    .stars {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    .star {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .star.selected {
+      color: #9B3731;
+    }
+
+    button {
+      background-color: #9B3731;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #7e2f29;
+    }
+
+    .thank-you {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.2rem;
+      color: #9B3731;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Thread HQ Logo">
+    </a>
+  </header>
+
+  <h1>Submit a Review</h1>
+
+  <form id="reviewForm">
+    <label for="brand">Brand/Influencer Name</label>
+    <input type="text" id="brand" name="brand" required>
+
+    <label>Rating</label>
+    <div class="stars" id="starRating">
+      <span class="star" data-value="1">&#9733;</span>
+      <span class="star" data-value="2">&#9733;</span>
+      <span class="star" data-value="3">&#9733;</span>
+      <span class="star" data-value="4">&#9733;</span>
+      <span class="star" data-value="5">&#9733;</span>
+    </div>
+
+    <label for="review">Review</label>
+    <textarea id="review" name="review" rows="6" required></textarea>
+
+    <input type="hidden" id="rating" name="rating" value="0">
+
+    <button type="submit">Submit Review</button>
+  </form>
+
+  <div class="thank-you" id="thankYouMessage">
+    Thank you for your review! 🧵
+  </div>
+
+  <script>
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const rating = star.getAttribute('data-value');
+        ratingInput.value = rating;
+
+        stars.forEach(s => {
+          s.classList.remove('selected');
+          if (s.getAttribute('data-value') <= rating) {
+            s.classList.add('selected');
+          }
+        });
+      });
+    });
+
+    document.getElementById('reviewForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const brand = document.getElementById('brand').value;
+      const rating = document.getElementById('rating').value;
+      const review = document.getElementById('review').value;
+
+      fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              brand: brand,
+              rating: rating,
+              review: review
+            }
+          ]
+        })
+      }).then(res => {
+        if (res.ok) {
+          document.getElementById('reviewForm').reset();
+          ratingInput.value = "0";
+          stars.forEach(s => s.classList.remove('selected'));
+          document.getElementById('thankYouMessage').style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
