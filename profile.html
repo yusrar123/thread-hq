@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile | Thread HQ</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
 <body>
   <div class="container">
@@ -19,13 +20,13 @@
     </header>
 
     <main>
-      <section class="profile-header">
-        <h1 id="profileName">Loading...</h1>
-        <p id="reviewCount"></p>
+      <section class="browse-hero" data-aos="fade-up">
+        <h1 id="profileTitle">Profile</h1>
+        <p>All reviews for this brand or influencer.</p>
       </section>
 
-      <div class="review-grid" id="profileReviews">
-        <!-- Reviews will load here -->
+      <div class="review-grid" id="reviewGrid" data-aos="fade-up" data-aos-delay="200">
+        <!-- Reviews will be inserted here -->
       </div>
     </main>
 
@@ -35,33 +36,47 @@
   </div>
 
   <script>
+    const reviewGrid = document.getElementById("reviewGrid");
+    const titleEl = document.getElementById("profileTitle");
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("name");
+    let allReviews = [];
 
-    document.getElementById("profileName").textContent = name;
+    titleEl.textContent = name ? `Reviews for ${name}` : "Profile";
 
     fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
-      .then(res => res.json())
-      .then(data => {
-        const filtered = data.filter(r => r.name.trim().toLowerCase() === name.trim().toLowerCase());
-        
-        document.getElementById("reviewCount").textContent =
-          filtered.length + " review(s) found";
-
-        if (filtered.length === 0) {
-          document.getElementById("profileReviews").innerHTML = "<p>No reviews yet.</p>";
-        } else {
-          filtered.forEach(review => {
-            const card = document.createElement("div");
-            card.classList.add("review-card");
-            card.innerHTML = `
-              <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-              <p>“${review.review}”</p>
-            `;
-            document.getElementById("profileReviews").appendChild(card);
-          });
-        }
+      .then((res) => res.json())
+      .then((data) => {
+        allReviews = data;
+        const filtered = allReviews.filter((r) => r.name.trim().toLowerCase() === name.trim().toLowerCase());
+        displayCards(filtered);
       });
+
+    function displayCards(reviews) {
+      if (reviews.length === 0) {
+        reviewGrid.innerHTML = "<p>No reviews found for this name.</p>";
+        return;
+      }
+
+      reviews.forEach((review) => {
+        const card = document.createElement("div");
+        card.classList.add("review-card");
+        card.setAttribute("data-type", review.type);
+
+        card.innerHTML = `
+          <div data-aos="fade-up">
+            <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
+            <p>“${review.review}”</p>
+          </div>
+        `;
+        reviewGrid.appendChild(card);
+      });
+
+      AOS.refresh();
+    }
   </script>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
 </body>
 </html>
