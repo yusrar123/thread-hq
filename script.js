@@ -63,20 +63,15 @@ let allBrandData = []; // full grouped data for sorting
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    renderBrands(data);
-  })
-  .catch(err => {
-    console.error("Failed to load data", err);
-  });
-document.getElementById("searchInput").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  const container = document.getElementById("brandCards");
-  container.innerHTML = "";
+    const brandGroups = {};
 
-  allBrandCards.forEach(card => {
-    const brand = card.getAttribute("data-brand");
-    if (brand.includes(query)) {
-      container.appendChild(card);
-    }
+    data.forEach(entry => {
+      const brand = entry.brand.trim();
+      if (!brandGroups[brand]) brandGroups[brand] = [];
+      brandGroups[brand].push(entry);
+    });
+
+    allBrandData = brandGroups;
+    renderBrands(brandGroups); // default to A-Z
   });
-});
+
