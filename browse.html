@@ -1,161 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Browse Reviews | Thread HQ</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="logo"><a href="index.html">Thread HQ</a></div>
-        <nav>
-          <a href="index.html#how-it-works">How It Works</a>
-          <a href="index.html#submit">Submit</a>
-          <a href="browse.html" class="active">Browse</a>
-        </nav>
-      </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse | Thread HQ</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #F6F4F0;
+      font-family: 'Georgia', serif;
+      color: #333;
+    }
 
-      <main>
-        <section class="browse-hero" data-aos="fade-up">
-          <h1>All Reviews</h1>
-          <p>See honest reviews from the community.</p>
-        </section>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #F6F4F0;
+      border-bottom: 1px solid #ddd;
+    }
 
-        <div class="filter-buttons" data-aos="fade-up" data-aos-delay="100">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="brand">Brands</button>
-          <button class="filter-btn" data-filter="influencer">Influencers</button>
-        </div>
-<div class="search-bar" data-aos="fade-up" data-aos-delay="150">
-  <input
-    type="text"
-    id="searchInput"
-    placeholder="Search brands or influencers..."
-    oninput="handleSearch()"
-  />
-</div>
+    .logo {
+      font-family: 'Georgia', serif;
+      font-size: 32px;
+      color: #9B3731;
+    }
 
-        <section class="brand-directory" data-aos="fade-up" data-aos-delay="200">
-          <h2>Browse by Name</h2>
-          <div class="name-buttons" id="nameButtons">
-            <!-- Brand/influencer names will be injected here -->
-          </div>
-        </section>
-<section class="brand-cards" data-aos="fade-up" data-aos-delay="250">
-  <h2>Explore Brands & Influencers</h2>
-  <div class="card-grid" id="brandCardGrid">
-    <!-- Cards will be inserted here -->
+    .logo span {
+      font-family: 'Cursive', serif;
+      font-size: 18px;
+      margin-left: 5px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #9B3731;
+      font-weight: bold;
+    }
+
+    .browse-hero {
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    .browse-hero h1 {
+      font-size: 36px;
+      color: #9B3731;
+    }
+
+    .browse-hero p {
+      font-size: 18px;
+      color: #444;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .review-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 20px;
+    }
+
+    .review-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #9B3731;
+    }
+
+    .review-card p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .stars {
+      margin-top: 10px;
+      color: #9B3731;
+      font-size: 18px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #aaa;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">THREAD <span>hq</span></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="submit.html">Submit</a>
+    </nav>
+  </header>
+
+  <section class="browse-hero">
+    <h1>All Reviews</h1>
+    <p>See honest reviews from the community.</p>
+  </section>
+
+  <div class="review-grid" id="reviewGrid">
+    <!-- Reviews will load here dynamically -->
   </div>
-</section>
 
-        <div class="review-grid" id="reviewGrid" data-aos="fade-up" data-aos-delay="300">
-          <!-- Real reviews will load here -->
-        </div>
-      </main>
+  <footer>
+    &copy; 2025 Thread HQ. Built for transparency.
+  </footer>
 
-      <footer>
-        <p>&copy; 2025 Thread HQ. Built for transparency.</p>
-      </footer>
-    </div>
-
-    <script>
-      const filterButtons = document.querySelectorAll(".filter-btn");
-      const reviewGrid = document.getElementById("reviewGrid");
-      const nameButtons = document.getElementById("nameButtons");
-      let allReviews = [];
-
-      fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo") // ✅ Use your actual API ID
-        .then((res) => res.json())
-        .then((data) => {
-          allReviews = data;
-          renderNameButtons();
-          renderReviews("all");
-        });
-
-      function renderNameButtons() {
-        const uniqueNames = [...new Set(allReviews.map((r) => r.name.trim()))].sort();
-
-        nameButtons.innerHTML = ""; // clear previous in case of reload
-
-        uniqueNames.forEach((name) => {
-          const btn = document.createElement("button");
-          btn.classList.add("name-btn");
-          btn.textContent = name;
-          btn.setAttribute("data-name", name);
-
-btn.addEventListener("click", () => {
-  const name = btn.getAttribute("data-name");
-  window.location.href = `profile.html?name=${encodeURIComponent(name)}`;
-});
-
-
-
-          nameButtons.appendChild(btn);
-        });
-      }
-
-      function renderReviews(type) {
-        reviewGrid.innerHTML = "";
-
-        const filtered = type === "all"
-          ? allReviews
-          : allReviews.filter((r) => r.type.toLowerCase() === type);
-
-        displayCards(filtered);
-      }
-
-      function renderReviewsByName(name) {
-  const filtered = allReviews.filter((r) => r.name.trim().toLowerCase() === name.trim().toLowerCase());
-
-  console.log("Clicked Name:", name);
-  console.log("Matching reviews:", filtered);
-
-  reviewGrid.innerHTML = "";
-  displayCards(filtered);
-}
-
-const initials = review.name
-  .split(" ")
-  .map(word => word[0].toUpperCase())
-  .join("")
-  .substring(0, 2);
-
-card.innerHTML = `
-  <div class="review-content" data-aos="fade-up">
-    <div class="avatar">${initials}</div>
-    <div>
-      <h3>${review.type === "influencer" ? "Influencer" : "Brand"}: ${review.name}</h3>
-      <p>“${review.review}”</p>
-    </div>
-  </div>
-`;
-
-
-
-      filterButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          renderReviews(btn.getAttribute("data-filter"));
+  <script>
+    fetch("https://sheetdb.io/api/v1/4a5jm1rk5creo")
+      .then((res) => res.json())
+      .then((data) => {
+        const grid = document.getElementById("reviewGrid");
+        data.forEach((review) => {
+          const card = document.createElement("div");
+          card.className = "review-card";
+          card.innerHTML = `
+            <h3>${review.name}</h3>
+            <p>"${review.review}"</p>
+            ${review.rating ? `<div class="stars">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</div>` : ""}
+          `;
+          grid.appendChild(card);
         });
       });
-      function handleSearch() {
-  const query = document.getElementById("searchInput").value.trim().toLowerCase();
-
-  const filtered = allReviews.filter((r) =>
-    r.name && r.name.toLowerCase().includes(query)
-  );
-
-  reviewGrid.innerHTML = "";
-  displayCards(filtered);
-}
-    </script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init();</script>
-  </body>
+  </script>
+</body>
 </html>
