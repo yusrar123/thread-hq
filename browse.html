@@ -30,6 +30,14 @@
           <button class="filter-btn" data-filter="brand">Brands</button>
           <button class="filter-btn" data-filter="influencer">Influencers</button>
         </div>
+<div class="search-bar" data-aos="fade-up" data-aos-delay="150">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search brands or influencers..."
+    oninput="handleSearch()"
+  />
+</div>
 
         <section class="brand-directory" data-aos="fade-up" data-aos-delay="200">
           <h2>Browse by Name</h2>
