@@ -18,18 +18,26 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("reviewForm");
 
   if (!form) {
-    console.error("❌ reviewForm not found in DOM.");
+    console.error("❌ ERROR: reviewForm not found in DOM.");
     return;
   }
+
+  console.log("✅ reviewForm FOUND");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    const type = document.getElementById("type").value;
+    const name = document.getElementById("name").value;
+    const review = document.getElementById("review").value;
+
+    console.log("📤 Submitting review:", { type, name, review });
+
     const data = {
       data: {
-        type: document.getElementById("type").value,
-        name: document.getElementById("name").value,
-        review: document.getElementById("review").value,
+        type,
+        name,
+        review,
       },
     };
 
@@ -40,14 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
-      .then(() => {
+      .then((res) => {
+        console.log("📬 Response received from SheetDB:", res.status);
+        return res.json();
+      })
+      .then((resData) => {
         alert("✅ Review submitted successfully!");
         form.reset();
+        console.log("🎉 Submission success:", resData);
       })
       .catch((err) => {
         alert("❌ Error submitting review. Try again.");
-        console.error(err);
+        console.error("🚨 Submission failed:", err);
       });
   });
 });
