@@ -1,90 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thread HQ</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- AOS Animation CSS -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="logo">Thread HQ</div>
-        <nav>
-          <a href="#how-it-works">How It Works</a>
-          <a href="#submit">Submit</a>
-          <a href="#browse">Browse</a>
-        </nav>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thread HQ</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #F6F4F0;
+      font-family: 'Georgia', serif;
+      color: #333;
+    }
 
-      <main>
-        <section class="hero" data-aos="fade-up">
-<section class="how-it-works" data-aos="fade-up" data-aos-delay="200">
-        <section class="hero">
-          <h1>Review Brands.<br />Expose Scams.<br />Empower Creators.</h1>
-          <p>Honest reviews by the public & small businesses.</p>
-          <a href="#submit" class="cta-button">Submit a Review</a>
-        </section>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #F6F4F0;
+      border-bottom: 1px solid #ddd;
+    }
 
-       <section class="how-it-works" data-aos="fade-up" data-aos-delay="200">
-</section>
+    .logo {
+      font-family: 'Georgia', serif;
+      font-size: 32px;
+      color: #9B3731;
+    }
 
-<section id="submit" class="form-section">
-  <h2>Submit a Review</h2>
-  <form id="reviewForm">
-  <label for="type">Review Type:</label>
-  <select name="type" id="type" required>
-    <option value="">Select One</option>
-    <option value="brand">Brand</option>
-    <option value="influencer">Influencer</option>
-  </select>
+    .logo span {
+      font-family: 'Cursive', serif;
+      font-size: 18px;
+      margin-left: 5px;
+    }
 
-  <label for="name">Brand or Influencer Name:</label>
-  <input type="text" name="name" id="name" required placeholder="e.g. Zara or @scammerqueen" />
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #9B3731;
+      font-weight: bold;
+    }
 
-  <label for="review">Your Review:</label>
-  <textarea name="review" id="review" required placeholder="Write your honest experience here..."></textarea>
+    .hero {
+      padding: 80px 40px;
+      text-align: center;
+    }
 
-  <label for="rating">Star Rating:</label>
-  <div class="star-rating">
-    <span data-value="5">&#9733;</span>
-    <span data-value="4">&#9733;</span>
-    <span data-value="3">&#9733;</span>
-    <span data-value="2">&#9733;</span>
-    <span data-value="1">&#9733;</span>
-  </div>
-  <input type="hidden" name="rating" id="rating" required />
+    .hero h1 {
+      font-size: 48px;
+      color: #9B3731;
+    }
 
-  <button type="submit">Submit Review</button>
-</form>
-</section>
+    .hero p {
+      font-size: 20px;
+      color: #444;
+      max-width: 600px;
+      margin: 20px auto 0;
+    }
 
-        <section id="browse" class="browse-preview">
-          <h2>Browse Reviews</h2>
-          <p>
-            See what people are saying about brands and influencers.
-          </p>
-          <a href="browse.html" class="browse-button">View All Reviews</a>
-        </section>
-      </main>
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #aaa;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">THREAD <span>hq</span></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="submit.html">Submit</a>
+    </nav>
+  </header>
 
-      <footer>
-        <p>&copy; 2025 Thread HQ. Built for honesty.</p>
-      </footer>
-    </div>
+  <section class="hero">
+    <h1>Welcome to Thread HQ</h1>
+    <p>Review brands. Expose scams. Empower creators. Built for transparency and trust.</p>
+  </section>
 
-    <script src="script.js"></script>
-    <!-- AOS Animation JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
-  </body>
+  <footer>
+    &copy; 2025 Thread HQ. Built for transparency.
+  </footer>
+</body>
 </html>
