@@ -79,7 +79,7 @@
     <h1>🧵 Thread HQ Community</h1>
     <a href="create.html" class="new-post-btn">Start a New Post</a>
   </header>
-
+<div id="feed"></div>
   <div class="feed-container" id="feed">
     <!-- Posts will be loaded here -->
   </div>
@@ -155,6 +155,26 @@
 
     renderPosts(samplePosts);
   </script>
+<!-- Include db.js before this -->
+<script src="db.js"></script>
+<script>
+  const container = document.getElementById("feed");
+
+  db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const post = doc.data();
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <h2>${post.title}</h2>
+        <p>${post.content}</p>
+      `;
+      container.appendChild(div);
+    });
+  });
+</script>
 
 </body>
 </html>
