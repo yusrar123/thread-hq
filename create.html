@@ -147,6 +147,27 @@
       this.reset();
     });
   </script>
+<!-- Include db.js BEFORE your script -->
+<script src="db.js"></script>
+<script>
+  document.getElementById("postForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value.trim();
+    const content = document.getElementById("content").value.trim();
+
+    if (!title || !content) return;
+
+    await db.collection("posts").add({
+      title,
+      content,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    document.getElementById("successMsg").style.display = "block";
+    this.reset();
+  });
+</script>
 
 </body>
 </html>
