@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community Feed – Thread HQ</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background-color: #F6F4F0;
+      color: #9B3731;
+      font-family: 'Georgia', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .feed-container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .post-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .post-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .new-post-btn {
+      display: inline-block;
+      background-color: #9B3731;
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin: 10px auto 30px;
+      display: block;
+      width: fit-content;
+    }
+
+    .new-post-btn:hover {
+      background-color: #7d2d27;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🧵 Thread HQ Community</h1>
+    <a href="create.html" class="new-post-btn">Start a New Post</a>
+  </header>
+
+  <div class="feed-container" id="feed">
+    <!-- Posts will be loaded here -->
+  </div>
+
+  <script>
+    const feed = document.getElementById("feed");
+
+    // Replace this later with Firebase or SheetDB
+    const samplePosts = [
+      {
+        id: "1",
+        title: "I ordered from XYZ and never got my package",
+        summary: "It's been 3 weeks and I haven’t received anything. Has anyone else had this issue?",
+        votes: 12,
+        comments: 4
+      },
+      {
+        id: "2",
+        title: "ABC Clothing had great customer service!",
+        summary: "Surprisingly smooth experience — thought I’d share some positivity too.",
+        votes: 8,
+        comments: 2
+      },
+      {
+        id: "3",
+        title: "Is [Influencer Name] still ghosting small businesses?",
+        summary: "I've seen multiple people post about her taking PR and not posting. Thoughts?",
+        votes: 23,
+        comments: 15
+      }
+    ];
+
+    function renderPosts(posts) {
+      posts.forEach(post => {
+        const card = document.createElement("a");
+        card.className = "post-card";
+        card.href = `post.html?id=${post.id}`;
+        card.innerHTML = `
+          <h2>${post.title}</h2>
+          <p>${post.summary}</p>
+          <div class="post-meta">
+            <span>⬆️ ${post.votes} votes</span>
+            <span>💬 ${post.comments} comments</span>
+          </div>
+        `;
+        feed.appendChild(card);
+      });
+    }
+
+    renderPosts(samplePosts);
+  </script>
+
+</body>
+</html>
