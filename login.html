@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – Thread HQ</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background-color: #F6F4F0;
+      color: #9B3731;
+      font-family: 'Georgia', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #9B3731;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #7d2d27;
+    }
+
+    .switch-link {
+      margin-top: 20px;
+      display: block;
+      color: #9B3731;
+      text-decoration: underline;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin: 30px auto 0;
+      text-decoration: none;
+      color: #9B3731;
+    }
+
+    .error-msg {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h1 id="formTitle">Log In</h1>
+
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+
+    <button id="submitBtn">Log In</button>
+    <div class="error-msg" id="errorMsg">⚠️ Invalid credentials</div>
+
+    <span class="switch-link" id="switchMode">Don't have an account? Sign up</span>
+  </div>
+
+  <a href="index.html" class="back-link">← Back to Feed</a>
+
+  <script>
+    let isLogin = true;
+
+    const formTitle = document.getElementById("formTitle");
+    const submitBtn = document.getElementById("submitBtn");
+    const switchLink = document.getElementById("switchMode");
+    const errorMsg = document.getElementById("errorMsg");
+
+    switchLink.addEventListener("click", () => {
+      isLogin = !isLogin;
+      formTitle.textContent = isLogin ? "Log In" : "Sign Up";
+      submitBtn.textContent = isLogin ? "Log In" : "Sign Up";
+      switchLink.textContent = isLogin
+        ? "Don't have an account? Sign up"
+        : "Already have an account? Log in";
+      errorMsg.style.display = "none";
+    });
+
+    submitBtn.addEventListener("click", () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        errorMsg.textContent = "⚠️ Please fill in all fields";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      // Placeholder logic — will replace with Firebase Auth later
+      console.log(isLogin ? "Logging in..." : "Signing up...", email, password);
+      errorMsg.textContent = "⚠️ Auth not yet connected.";
+      errorMsg.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
