@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Community Feed – Thread HQ</title>
+  <title>Thread HQ – Community Feed</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     body {
@@ -15,166 +15,128 @@
     }
 
     header {
-      background-color: #fff;
-      padding: 20px;
       text-align: center;
+      padding: 30px 20px;
+      background-color: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     header h1 {
+      font-size: 2.5rem;
       margin: 0;
-      font-size: 2rem;
     }
 
     .feed-container {
-      max-width: 800px;
-      margin: 30px auto;
+      max-width: 700px;
+      margin: 40px auto;
       padding: 0 20px;
     }
 
-    .post-card {
+    .post {
       background-color: white;
       border-radius: 12px;
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.1s ease;
+      cursor: pointer;
       text-decoration: none;
       color: inherit;
-      display: block;
     }
 
-    .post-card h2 {
-      margin: 0 0 10px;
-      font-size: 1.25rem;
+    .post:hover {
+      transform: translateY(-2px);
+      background-color: #fff9f8;
     }
 
-    .post-meta {
-      display: flex;
-      gap: 20px;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 10px;
+    .post h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
     }
 
-    .new-post-btn {
-      display: inline-block;
-      background-color: #9B3731;
-      color: white;
-      text-decoration: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      margin: 10px auto 30px;
+    .create-button {
       display: block;
       width: fit-content;
+      margin: 0 auto 30px;
+      background-color: #9B3731;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
     }
 
-    .new-post-btn:hover {
+    .create-button:hover {
       background-color: #7d2d27;
+    }
+
+    .empty-msg {
+      text-align: center;
+      font-style: italic;
+      margin-top: 50px;
+      color: #999;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>🧵 Thread HQ Community</h1>
-    <a href="create.html" class="new-post-btn">Start a New Post</a>
+    <h1>Thread HQ</h1>
   </header>
-<div id="feed"></div>
-  <div class="feed-container" id="feed">
-    <!-- Posts will be loaded here -->
+
+  <div class="feed-container">
+    <a href="create.html" class="create-button">+ Start a New Thread</a>
+
+    <div id="feed">
+      <p class="empty-msg">Loading posts...</p>
+    </div>
   </div>
-<!-- Firebase SDKs -->
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
-    authDomain: "thread-hq.firebaseapp.com",
-    projectId: "thread-hq",
-    storageBucket: "thread-hq.firebasestorage.app",
-    messagingSenderId: "308767276388",
-    appId: "1:308767276388:web:3cb466ce98693381a58e71",
-    measurementId: "G-M490XWV1C5"
-  };
+  <!-- Firebase SDK + Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
-
+  <!-- Your Firebase config -->
   <script>
-    const feed = document.getElementById("feed");
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
+      authDomain: "thread-hq.firebaseapp.com",
+      projectId: "thread-hq",
+      storageBucket: "thread-hq.firebasestorage.app",
+      messagingSenderId: "308767276388",
+      appId: "1:308767276388:web:3cb466ce98693381a58e71",
+      measurementId: "G-M490XWV1C5"
+    };
 
-    // Replace this later with Firebase or SheetDB
-    const samplePosts = [
-      {
-        id: "1",
-        title: "I ordered from XYZ and never got my package",
-        summary: "It's been 3 weeks and I haven’t received anything. Has anyone else had this issue?",
-        votes: 12,
-        comments: 4
-      },
-      {
-        id: "2",
-        title: "ABC Clothing had great customer service!",
-        summary: "Surprisingly smooth experience — thought I’d share some positivity too.",
-        votes: 8,
-        comments: 2
-      },
-      {
-        id: "3",
-        title: "Is [Influencer Name] still ghosting small businesses?",
-        summary: "I've seen multiple people post about her taking PR and not posting. Thoughts?",
-        votes: 23,
-        comments: 15
-      }
-    ];
-
-    function renderPosts(posts) {
-      posts.forEach(post => {
-        const card = document.createElement("a");
-        card.className = "post-card";
-        card.href = `post.html?id=${post.id}`;
-        card.innerHTML = `
-          <h2>${post.title}</h2>
-          <p>${post.summary}</p>
-          <div class="post-meta">
-            <span>⬆️ ${post.votes} votes</span>
-            <span>💬 ${post.comments} comments</span>
-          </div>
-        `;
-        feed.appendChild(card);
-      });
-    }
-
-    renderPosts(samplePosts);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
   </script>
-<!-- Include db.js before this -->
-<script src="db.js"></script>
-<script>
-  const container = document.getElementById("feed");
 
-  db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-    container.innerHTML = "";
+  <!-- Load posts -->
+  <script>
+    const container = document.getElementById("feed");
 
-    snapshot.forEach(doc => {
-      const post = doc.data();
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <h2>${post.title}</h2>
-        <p>${post.content}</p>
-      `;
-      container.appendChild(div);
+    db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+      container.innerHTML = "";
+
+      if (snapshot.empty) {
+        container.innerHTML = `<p class="empty-msg">No threads yet. Be the first to post!</p>`;
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const post = doc.data();
+        const div = document.createElement("a");
+        div.className = "post";
+        div.href = `post.html?id=${doc.id}`;
+        div.innerHTML = `
+          <h2>${post.title}</h2>
+          <p>${post.content.length > 120 ? post.content.slice(0, 120) + '...' : post.content}</p>
+        `;
+        container.appendChild(div);
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
