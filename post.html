@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>View Post – Thread HQ</title>
+  <title>Thread – Thread HQ</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     body {
@@ -14,64 +14,36 @@
       padding: 0;
     }
 
-    header {
-      background-color: #fff;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    .post-container {
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .post-card {
-      background-color: white;
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: white;
       border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 30px;
     }
 
-    .post-card h2 {
+    h1 {
       margin-top: 0;
     }
 
-    .comments-section {
-      background-color: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    .post-content {
+      margin-bottom: 40px;
     }
 
     .comment {
-      border-top: 1px solid #ddd;
-      padding: 10px 0;
-    }
-
-    .comment:first-child {
-      border-top: none;
-    }
-
-    .comment-form {
-      margin-top: 30px;
+      border-top: 1px solid #eee;
+      padding: 15px 0;
     }
 
     textarea {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border-radius: 6px;
       border: 1px solid #ccc;
       font-family: inherit;
       font-size: 1rem;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
 
     button {
@@ -82,6 +54,7 @@
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
+      margin-top: 10px;
     }
 
     button:hover {
@@ -90,142 +63,100 @@
 
     .back-link {
       display: block;
+      margin-top: 30px;
       text-align: center;
-      margin: 30px auto 0;
-      text-decoration: none;
       color: #9B3731;
-    }
-
-    .success-msg {
-      background-color: #e6f5ea;
-      border: 1px solid #8bcf9e;
-      color: #3c7d5e;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      display: none;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Community Discussion</h1>
-  </header>
-
-  <div class="post-container">
-    <div class="post-card" id="postCard">
-      <h2 id="postTitle">Loading title...</h2>
-      <p id="postContent">Loading content...</p>
+  <div class="container">
+    <div id="postContainer" class="post-content">
+      <h1>Loading...</h1>
+      <p>Please wait while the thread loads.</p>
     </div>
 
-    <div class="comments-section" id="commentsBox">
-      <h3>Replies</h3>
-      <div id="commentsList">
-        <!-- Comments will be loaded here -->
-      </div>
-
-      <form class="comment-form" id="commentForm">
-        <textarea id="commentText" rows="4" required placeholder="Write your reply here..."></textarea>
-        <button type="submit">Submit Comment</button>
-      </form>
-
-      <div class="success-msg" id="commentSuccess">✅ Your comment was added!</div>
+    <div id="commentsSection">
+      <h3>Comments</h3>
+      <div id="commentsList"></div>
     </div>
+
+    <form id="commentForm">
+      <textarea id="commentText" rows="3" placeholder="Add a comment..." required></textarea>
+      <button type="submit">Post Comment</button>
+    </form>
 
     <a href="index.html" class="back-link">← Back to Feed</a>
   </div>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
-    authDomain: "thread-hq.firebaseapp.com",
-    projectId: "thread-hq",
-    storageBucket: "thread-hq.firebasestorage.app",
-    messagingSenderId: "308767276388",
-    appId: "1:308767276388:web:3cb466ce98693381a58e71",
-    measurementId: "G-M490XWV1C5"
-  };
+  <!-- Firebase SDK + Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+  <!-- Firebase config -->
   <script>
-    // Get post ID from URL
-    const params = new URLSearchParams(window.location.search);
-    const postId = params.get("id");
-
-    // TEMP: Sample data
-    const samplePosts = {
-      "1": {
-        title: "I ordered from XYZ and never got my package",
-        content: "It's been 3 weeks and I haven’t received anything. Has anyone else had this issue?",
-        comments: [
-          "Same thing happened to me! I had to DM them 5 times.",
-          "Try reaching out via their email — they eventually replied to me."
-        ]
-      },
-      "2": {
-        title: "ABC Clothing had great customer service!",
-        content: "Surprisingly smooth experience — thought I’d share some positivity too.",
-        comments: [
-          "Love this! We need more positive reviews too ❤️",
-          "They were great to me as well!"
-        ]
-      },
-      "3": {
-        title: "Is [Influencer Name] still ghosting small businesses?",
-        content: "I've seen multiple people post about her taking PR and not posting. Thoughts?",
-        comments: [
-          "She ignored our team after we paid her.",
-          "Yikes, I was considering working with her..."
-        ]
-      }
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
+      authDomain: "thread-hq.firebaseapp.com",
+      projectId: "thread-hq",
+      storageBucket: "thread-hq.firebasestorage.app",
+      messagingSenderId: "308767276388",
+      appId: "1:308767276388:web:3cb466ce98693381a58e71",
+      measurementId: "G-M490XWV1C5"
     };
 
-    const post = samplePosts[postId];
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
 
-    const titleEl = document.getElementById("postTitle");
-    const contentEl = document.getElementById("postContent");
+  <!-- Thread logic -->
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("id");
+
+    const postContainer = document.getElementById("postContainer");
     const commentsList = document.getElementById("commentsList");
-    const successMsg = document.getElementById("commentSuccess");
 
-    if (post) {
-      titleEl.textContent = post.title;
-      contentEl.textContent = post.content;
+    // Load post
+    db.collection("posts").doc(postId).get().then(doc => {
+      if (doc.exists) {
+        const data = doc.data();
+        postContainer.innerHTML = `
+          <h1>${data.title}</h1>
+          <p>${data.content}</p>
+        `;
+      } else {
+        postContainer.innerHTML = "<h1>Post not found</h1>";
+      }
+    });
 
-      post.comments.forEach(comment => {
-        const div = document.createElement("div");
-        div.className = "comment";
-        div.textContent = comment;
-        commentsList.appendChild(div);
+    // Load comments
+    db.collection("posts").doc(postId).collection("comments").orderBy("timestamp", "asc")
+      .onSnapshot(snapshot => {
+        commentsList.innerHTML = "";
+        snapshot.forEach(doc => {
+          const comment = doc.data();
+          const div = document.createElement("div");
+          div.className = "comment";
+          div.innerHTML = `<p>${comment.text}</p>`;
+          commentsList.appendChild(div);
+        });
       });
-    } else {
-      titleEl.textContent = "Post not found.";
-      contentEl.textContent = "";
-    }
 
-    document.getElementById("commentForm").addEventListener("submit", function(e) {
+    // Submit new comment
+    document.getElementById("commentForm").addEventListener("submit", async function(e) {
       e.preventDefault();
+      const text = document.getElementById("commentText").value.trim();
+      if (!text) return;
 
-      const commentText = document.getElementById("commentText").value.trim();
-      if (!commentText) return;
+      await db.collection("posts").doc(postId).collection("comments").add({
+        text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-      const div = document.createElement("div");
-      div.className = "comment";
-      div.textContent = commentText;
-      commentsList.appendChild(div);
-
-      document.getElementById("commentText").value = "";
-      successMsg.style.display = "block";
+      document.getElementById("commentForm").reset();
     });
   </script>
 
