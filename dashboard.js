@@ -15,6 +15,7 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+// ✅ Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
   authDomain: "thread-hq.firebaseapp.com",
@@ -29,63 +30,51 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ✅ DOM Elements
 const wishlistForm = document.getElementById("wishlistForm");
+const productUrl = document.getElementById("productUrl");
 const wishlistItems = document.getElementById("wishlistItems");
+const successMessage = document.getElementById("successMessage");
 
 let currentUser = null;
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
+// ✅ Wait for user to be logged in
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
     currentUser = user;
     loadWishlist();
-  } else {
-    window.location.href = "login.html";
   }
 });
 
+// ✅ Submit Wishlist Form
 wishlistForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const url = wishlistForm.elements[0].value;
+  const url = productUrl.value.trim();
+  if (!url) return;
 
   try {
     await addDoc(collection(db, "wishlist"), {
       userId: currentUser.uid,
-      url,
-      notify: false
+      url: url,
+      notify: true,
+      lastPrice: "9999"
     });
-function loadWishlist() {
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      db.collection("wishlist")
-        .where("userId", "==", user.uid)
-        .get()
-        .then(snapshot => {
-          const list = document.getElementById("wishlistItems");
-          list.innerHTML = ""; // clear previous
 
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const li = document.createElement("li");
-            li.style.padding = "10px 0";
-            li.innerHTML = `<a href="${data.url}" target="_blank" style="color: #000;">${data.url}</a>`;
-            list.appendChild(li);
-          });
-        });
-    }
-  });
-}
+    successMessage.style.display = "block";
+    setTimeout(() => {
+      successMessage.style.display = "none";
+    }, 3000);
 
-// Load on page load
-loadWishlist();
-
-    wishlistForm.reset();
+    productUrl.value = "";
     loadWishlist();
   } catch (error) {
     alert("Error saving item: " + error.message);
   }
 });
 
+// ✅ Load Wishlist Items
 async function loadWishlist() {
   wishlistItems.innerHTML = "";
 
@@ -112,7 +101,7 @@ async function loadWishlist() {
       </div>
     `;
 
-    // Notify toggle
+    // ✅ Toggle Notify
     const checkbox = li.querySelector("input[type='checkbox']");
     checkbox.addEventListener("change", async () => {
       await updateDoc(doc(db, "wishlist", docSnap.id), {
@@ -120,7 +109,7 @@ async function loadWishlist() {
       });
     });
 
-    // Delete button
+    // ✅ Delete Item
     const deleteButton = li.querySelector(".delete-btn");
     deleteButton.addEventListener("click", async () => {
       if (confirm("Are you sure you want to delete this item?")) {
