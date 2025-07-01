@@ -2,27 +2,159 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard – Thread HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thread HQ - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      border-bottom: 1px solid #eee;
+    }
+
+    .logo {
+      max-width: 180px;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="url"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #222;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message.success {
+      background-color: #e5fbe7;
+      color: #207a34;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin: 20px;
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
     <img src="assets/logo.png" alt="Thread HQ Logo" class="logo" />
   </header>
 
-  <main class="dashboard">
+  <main>
     <h1>Your Wishlist</h1>
     <form id="wishlistForm">
-      <input type="url" placeholder="Paste product URL here" required />
-      <button type="submit">Add to Wishlist</button>
+      <input type="url" id="productUrl" placeholder="Paste product URL here" required />
+      <button type="submit">Save to Wishlist</button>
     </form>
-
-    <ul id="wishlistItems" class="wishlist-list">
-      <!-- Items will appear here -->
-    </ul>
+    <div class="message success" id="successMessage">✅ Saved successfully!</div>
   </main>
 
-  <script src="dashboard.js" type="module"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
+      authDomain: "thread-hq.firebaseapp.com",
+      projectId: "thread-hq",
+      storageBucket: "thread-hq.firebasestorage.app",
+      messagingSenderId: "308767276388",
+      appId: "1:308767276388:web:3cb466ce98693381a58e71",
+      measurementId: "G-M490XWV1C5"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+  </script>
+  <script>
+    const wishlistForm = document.getElementById("wishlistForm");
+    const productUrl = document.getElementById("productUrl");
+    const successMessage = document.getElementById("successMessage");
+
+    wishlistForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const url = productUrl.value;
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          db.collection("wishlist").add({
+            url: url,
+            userId: user.uid,
+            notify: true,
+            lastPrice: "9999"
+          })
+          .then(() => {
+            successMessage.style.display = "block";
+            productUrl.value = "";
+            setTimeout(() => {
+              successMessage.style.display = "none";
+            }, 3000);
+          })
+          .catch((error) => {
+            alert("Error: " + error.message);
+          });
+        } else {
+          alert("Please log in to add items to your wishlist.");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
