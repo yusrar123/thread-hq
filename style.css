@@ -47,3 +47,12 @@ button {
   text-decoration: none;
   border-radius: 8px;
 }
+.login-link {
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+.login-link a {
+  color: #272727;
+  font-weight: bold;
+  text-decoration: underline;
+}
