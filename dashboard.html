@@ -97,13 +97,15 @@
 
   <main>
     <h1>Your Wishlist</h1>
-    <div class="message" id="successMessage">✅ Saved successfully!</div>
-    <form id="wishlistForm">
-      <input type="url" id="productUrl" placeholder="Paste product URL" required />
-      <button type="submit">Save to Wishlist</button>
-    </form>
+ <form id="wishlistForm">
+  <input type="url" id="productUrl" required />
+  <button type="submit">Save</button>
+</form>
 
-    <ul id="wishlistItems"></ul>
+<div id="successMessage" class="message">✅ Saved successfully!</div>
+
+<ul id="wishlistItems"></ul>
+
   </main>
 
   <!-- Firebase SDK -->
