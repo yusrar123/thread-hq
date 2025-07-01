@@ -60,13 +60,23 @@ async function loadWishlist() {
   const q = query(collection(db, "wishlist"), where("userId", "==", currentUser.uid));
   const querySnapshot = await getDocs(q);
 
+  if (querySnapshot.empty) {
+    wishlistItems.innerHTML = "<p>You haven’t saved anything yet!</p>";
+    return;
+  }
+
   querySnapshot.forEach((doc) => {
     const item = doc.data();
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <a href="${item.url}" target="_blank"><img src="${item.image}" width="100" /></a><br/>
+    const card = document.createElement("div");
+
+    card.innerHTML = `
+      <a href="${item.url}" target="_blank">
+        <img src="${item.image}" onerror="this.src='https://via.placeholder.com/300x400?text=Image+Not+Found'" />
+      </a>
       <strong>${item.price}</strong>
     `;
-    wishlistItems.appendChild(li);
+
+    wishlistItems.appendChild(card);
   });
 }
+
