@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Wishlist – Thread HQ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <img src="assets/logo.png" alt="Thread HQ Logo" class="logo" />
+  </header>
+
+  <main>
+    <section class="dashboard">
+      <h1>Welcome to Your Thread Wishlist 👗</h1>
+      <p id="welcomeUser">Loading...</p>
+
+      <h2>Add a Product</h2>
+      <form id="wishlistForm">
+        <input type="url" placeholder="Product URL" required />
+        <input type="text" placeholder="Image URL" required />
+        <input type="text" placeholder="Price (e.g. Rs 4,500)" required />
+        <button type="submit">Save to Wishlist</button>
+      </form>
+
+      <h2>Your Wishlist</h2>
+      <ul id="wishlistItems">
+        <!-- Wishlist items will show here -->
+      </ul>
+    </section>
+  </main>
+
+  <script src="dashboard.js" type="module"></script>
+</body>
+</html>
