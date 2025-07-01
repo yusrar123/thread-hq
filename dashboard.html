@@ -4,21 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thread HQ - Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Playfair Display', serif;
-      background-color: #f9f9f9;
+      background-color: #f8f8f8;
       color: #333;
     }
 
     header {
       padding: 20px;
       text-align: center;
-      background-color: #fff;
-      border-bottom: 1px solid #eee;
+      background: white;
+      border-bottom: 1px solid #ddd;
     }
 
     .logo {
@@ -29,13 +28,15 @@
       max-width: 600px;
       margin: 40px auto;
       background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
       padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     }
 
-    h1, h2 {
+    h1 {
       text-align: center;
+      font-size: 26px;
+      margin-bottom: 20px;
     }
 
     form {
@@ -53,30 +54,23 @@
     }
 
     button {
-      background-color: #000;
-      color: #fff;
-      border: none;
+      background-color: black;
+      color: white;
       padding: 12px;
-      border-radius: 12px;
       font-size: 16px;
+      border: none;
+      border-radius: 12px;
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #222;
-    }
-
     .message {
-      margin-top: 15px;
+      background-color: #e6ffe6;
+      color: #2a7a2a;
       padding: 10px;
       border-radius: 8px;
-      font-size: 14px;
       display: none;
-    }
-
-    .message.success {
-      background-color: #e5fbe7;
-      color: #207a34;
+      margin-bottom: 20px;
+      text-align: center;
     }
 
     ul#wishlistItems {
@@ -85,14 +79,14 @@
     }
 
     ul#wishlistItems li {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
+      margin-bottom: 12px;
     }
 
-    ul#wishlistItems li a {
-      text-decoration: none;
+    ul#wishlistItems a {
       color: #000;
+      text-decoration: none;
       font-size: 15px;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -103,16 +97,12 @@
 
   <main>
     <h1>Your Wishlist</h1>
-
+    <div class="message" id="successMessage">✅ Saved successfully!</div>
     <form id="wishlistForm">
-      <input type="url" id="productUrl" placeholder="Paste product URL here" required />
+      <input type="url" id="productUrl" placeholder="Paste product URL" required />
       <button type="submit">Save to Wishlist</button>
     </form>
 
-    <div class="message success" id="successMessage">✅ Saved successfully!</div>
-
-    <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
-    <h2>Your Saved Items</h2>
     <ul id="wishlistItems"></ul>
   </main>
 
@@ -135,6 +125,7 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
   </script>
+
   <script>
     const wishlistForm = document.getElementById("wishlistForm");
     const productUrl = document.getElementById("productUrl");
@@ -143,11 +134,11 @@
 
     auth.onAuthStateChanged(user => {
       if (!user) {
-        alert("You must be logged in to access the dashboard.");
+        alert("Please log in first.");
         return;
       }
 
-      // ✅ Load wishlist items on page load
+      // Load wishlist items
       db.collection("wishlist")
         .where("userId", "==", user.uid)
         .get()
@@ -161,12 +152,11 @@
           });
         });
 
-      // ✅ Handle wishlist form submission
-      wishlistForm.addEventListener("submit", function (e) {
+      // Form submit
+      wishlistForm.addEventListener("submit", e => {
         e.preventDefault();
         const url = productUrl.value.trim();
-
-        if (url === "") return;
+        if (!url) return;
 
         db.collection("wishlist").add({
           url: url,
@@ -174,18 +164,18 @@
           notify: true,
           lastPrice: "9999"
         }).then(() => {
-          productUrl.value = "";
+          // Show success message
           successMessage.style.display = "block";
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 3000);
 
-          // Add item to the list immediately
+          // Add to list immediately
           const li = document.createElement("li");
           li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
           wishlistItems.appendChild(li);
 
-          // Hide success message after 3 seconds
-          setTimeout(() => {
-            successMessage.style.display = "none";
-          }, 3000);
+          productUrl.value = "";
         });
       });
     });
