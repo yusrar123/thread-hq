@@ -121,10 +121,15 @@ async function loadWishlist() {
     wishlistItems.appendChild(li);
   });
 }
-// 🔙 Back to Home button
-const backButton = document.getElementById("backButton");
-if (backButton) {
-  backButton.addEventListener("click", () => {
-    window.location.href = "index.html"; // change to "login.html" if you prefer
+// 🔓 Log Out and Redirect
+const logoutButton = document.getElementById("logoutButton");
+if (logoutButton) {
+  logoutButton.addEventListener("click", () => {
+    auth.signOut().then(() => {
+      window.location.href = "index.html";
+    }).catch((error) => {
+      alert("Error logging out: " + error.message);
+    });
   });
 }
+
