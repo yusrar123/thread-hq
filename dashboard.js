@@ -16,7 +16,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const welcomeUser = document.getElementById("welcomeUser");
 const wishlistForm = document.getElementById("wishlistForm");
 const wishlistItems = document.getElementById("wishlistItems");
 
@@ -25,7 +24,6 @@ let currentUser = null;
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
-    welcomeUser.textContent = `Hello, ${user.displayName || user.email}`;
     loadWishlist();
   } else {
     window.location.href = "login.html";
@@ -36,15 +34,11 @@ wishlistForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const url = wishlistForm.elements[0].value;
-  const image = wishlistForm.elements[1].value;
-  const price = wishlistForm.elements[2].value;
 
   try {
     await addDoc(collection(db, "wishlist"), {
       userId: currentUser.uid,
-      url,
-      image,
-      price
+      url
     });
 
     wishlistForm.reset();
@@ -61,22 +55,14 @@ async function loadWishlist() {
   const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
-    wishlistItems.innerHTML = "<p>You haven’t saved anything yet!</p>";
+    wishlistItems.innerHTML = "<li class='empty'>You haven’t saved anything yet.</li>";
     return;
   }
 
   querySnapshot.forEach((doc) => {
     const item = doc.data();
-    const card = document.createElement("div");
-
-    card.innerHTML = `
-      <a href="${item.url}" target="_blank">
-        <img src="${item.image}" onerror="this.src='https://via.placeholder.com/300x400?text=Image+Not+Found'" />
-      </a>
-      <strong>${item.price}</strong>
-    `;
-
-    wishlistItems.appendChild(card);
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="${item.url}" target="_blank">${item.url}</a>`;
+    wishlistItems.appendChild(li);
   });
 }
-
