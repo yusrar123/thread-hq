@@ -135,3 +135,9 @@ button {
   color: #777;
   font-style: italic;
 }
+.wishlist-list label {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #555;
+}
