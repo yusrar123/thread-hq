@@ -34,9 +34,7 @@
       padding: 30px;
     }
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
+    h1, h2 {
       text-align: center;
     }
 
@@ -44,6 +42,7 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      margin-bottom: 30px;
     }
 
     input[type="url"] {
@@ -61,7 +60,6 @@
       border-radius: 12px;
       font-size: 16px;
       cursor: pointer;
-      transition: background-color 0.2s;
     }
 
     button:hover {
@@ -79,14 +77,22 @@
     .message.success {
       background-color: #e5fbe7;
       color: #207a34;
-      display: block;
     }
 
-    @media (max-width: 600px) {
-      main {
-        margin: 20px;
-        padding: 20px;
-      }
+    ul#wishlistItems {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul#wishlistItems li {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    ul#wishlistItems li a {
+      text-decoration: none;
+      color: #000;
+      font-size: 15px;
     }
   </style>
 </head>
@@ -97,14 +103,17 @@
 
   <main>
     <h1>Your Wishlist</h1>
+
     <form id="wishlistForm">
       <input type="url" id="productUrl" placeholder="Paste product URL here" required />
       <button type="submit">Save to Wishlist</button>
     </form>
+
     <div class="message success" id="successMessage">✅ Saved successfully!</div>
-    <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
-<h2>Your Saved Items</h2>
-<ul id="wishlistItems" style="list-style: none; padding-left: 0;"></ul>
+
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
+    <h2>Your Saved Items</h2>
+    <ul id="wishlistItems"></ul>
   </main>
 
   <!-- Firebase SDK -->
@@ -130,32 +139,54 @@
     const wishlistForm = document.getElementById("wishlistForm");
     const productUrl = document.getElementById("productUrl");
     const successMessage = document.getElementById("successMessage");
+    const wishlistItems = document.getElementById("wishlistItems");
 
-    wishlistForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const url = productUrl.value;
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        alert("You must be logged in to access the dashboard.");
+        return;
+      }
 
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          db.collection("wishlist").add({
-            url: url,
-            userId: user.uid,
-            notify: true,
-            lastPrice: "9999"
-          })
-          .then(() => {
-            successMessage.style.display = "block";
-            productUrl.value = "";
-            setTimeout(() => {
-              successMessage.style.display = "none";
-            }, 3000);
-          })
-          .catch((error) => {
-            alert("Error: " + error.message);
+      // ✅ Load wishlist items on page load
+      db.collection("wishlist")
+        .where("userId", "==", user.uid)
+        .get()
+        .then(snapshot => {
+          wishlistItems.innerHTML = "";
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="${data.url}" target="_blank">${data.url}</a>`;
+            wishlistItems.appendChild(li);
           });
-        } else {
-          alert("Please log in to add items to your wishlist.");
-        }
+        });
+
+      // ✅ Handle wishlist form submission
+      wishlistForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const url = productUrl.value.trim();
+
+        if (url === "") return;
+
+        db.collection("wishlist").add({
+          url: url,
+          userId: user.uid,
+          notify: true,
+          lastPrice: "9999"
+        }).then(() => {
+          productUrl.value = "";
+          successMessage.style.display = "block";
+
+          // Add item to the list immediately
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+          wishlistItems.appendChild(li);
+
+          // Hide success message after 3 seconds
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 3000);
+        });
       });
     });
   </script>
