@@ -1,6 +1,18 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
@@ -38,7 +50,8 @@ wishlistForm.addEventListener("submit", async (e) => {
   try {
     await addDoc(collection(db, "wishlist"), {
       userId: currentUser.uid,
-      url
+      url,
+      notify: false
     });
 
     wishlistForm.reset();
@@ -59,10 +72,25 @@ async function loadWishlist() {
     return;
   }
 
-  querySnapshot.forEach((doc) => {
-    const item = doc.data();
+  querySnapshot.forEach((docSnap) => {
+    const item = docSnap.data();
     const li = document.createElement("li");
-    li.innerHTML = `<a href="${item.url}" target="_blank">${item.url}</a>`;
+
+    li.innerHTML = `
+      <a href="${item.url}" target="_blank">${item.url}</a><br/>
+      <label>
+        <input type="checkbox" ${item.notify ? "checked" : ""} data-id="${docSnap.id}" />
+        Notify me if this item goes on sale / restocks
+      </label>
+    `;
+
+    const checkbox = li.querySelector("input[type='checkbox']");
+    checkbox.addEventListener("change", async () => {
+      await updateDoc(doc(db, "wishlist", docSnap.id), {
+        notify: checkbox.checked
+      });
+    });
+
     wishlistItems.appendChild(li);
   });
 }
