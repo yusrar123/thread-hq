@@ -35,6 +35,7 @@ loginForm.addEventListener("submit", async (e) => {
   try {
     // ✅ Set Firebase persistence
     await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+console.log("Persistence set to:", rememberMe ? "LOCAL (Remember me ON)" : "SESSION (Remember me OFF)");
 
     // ✅ Now log the user in
     await signInWithEmailAndPassword(auth, email, password);
