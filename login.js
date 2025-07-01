@@ -7,7 +7,7 @@ import {
   browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Firebase config
+// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
   authDomain: "thread-hq.firebaseapp.com",
@@ -21,7 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// DOM Elements
+// ✅ DOM elements
 const loginForm = document.getElementById("loginForm");
 const rememberMeCheckbox = document.getElementById("rememberMe");
 
@@ -33,13 +33,13 @@ loginForm.addEventListener("submit", async (e) => {
   const rememberMe = rememberMeCheckbox.checked;
 
   try {
-    // 🔁 Set session vs local persistence
+    // ✅ Set Firebase persistence
     await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
 
-    // 🔐 Sign in
+    // ✅ Now log the user in
     await signInWithEmailAndPassword(auth, email, password);
 
-    // ✅ Redirect to dashboard
+    // ✅ Redirect only after login success
     window.location.href = "dashboard.html";
   } catch (error) {
     alert("Login error: " + error.message);
