@@ -31,5 +31,28 @@
   </main>
 
   <script src="script.js"></script>
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+
+<script>
+  // Paste your Firebase config here:
+  const firebaseConfig = {
+    apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
+    authDomain: "thread-hq.firebaseapp.com",
+    projectId: "thread-hq",
+    storageBucket: "thread-hq.firebasestorage.app",
+    messagingSenderId: "308767276388",
+    appId: "1:308767276388:web:3cb466ce98693381a58e71",
+    measurementId: "G-M490XWV1C5"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<!-- Your script -->
+<script src="script.js"></script>
+
 </body>
 </html>
