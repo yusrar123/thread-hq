@@ -1,6 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
   authDomain: "thread-hq.firebaseapp.com",
@@ -14,20 +21,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// DOM Elements
 const loginForm = document.getElementById("loginForm");
+const rememberMeCheckbox = document.getElementById("rememberMe");
 
-loginForm.addEventListener("submit", function (e) {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = loginForm.elements[0].value;
   const password = loginForm.elements[1].value;
+  const rememberMe = rememberMeCheckbox.checked;
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      alert("Logged in successfully!");
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      alert("Login failed: " + error.message);
-    });
+  try {
+    // 🔁 Set session vs local persistence
+    await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+
+    // 🔐 Sign in
+    await signInWithEmailAndPassword(auth, email, password);
+
+    // ✅ Redirect to dashboard
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    alert("Login error: " + error.message);
+  }
 });
