@@ -121,3 +121,10 @@ async function loadWishlist() {
     wishlistItems.appendChild(li);
   });
 }
+// 🔙 Back to Home button
+const backButton = document.getElementById("backButton");
+if (backButton) {
+  backButton.addEventListener("click", () => {
+    window.location.href = "index.html"; // change to "login.html" if you prefer
+  });
+}
