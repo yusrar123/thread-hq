@@ -39,14 +39,17 @@ const successMessage = document.getElementById("successMessage");
 let currentUser = null;
 
 // ✅ Wait for user to be logged in
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  } else {
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    console.log("✅ User is still logged in:", user.email);  // <- Add this line
     currentUser = user;
     loadWishlist();
+  } else {
+    console.log("❌ User is not logged in");  // <- Add this line too
+    window.location.href = "login.html";
   }
 });
+
 
 // ✅ Submit Wishlist Form
 wishlistForm.addEventListener("submit", async (e) => {
