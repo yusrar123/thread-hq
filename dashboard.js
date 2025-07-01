@@ -11,6 +11,7 @@ import {
   where,
   getDocs,
   updateDoc,
+  deleteDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -77,18 +78,31 @@ async function loadWishlist() {
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <a href="${item.url}" target="_blank">${item.url}</a><br/>
-      <label>
-        <input type="checkbox" ${item.notify ? "checked" : ""} data-id="${docSnap.id}" />
-        Notify me if this item goes on sale / restocks
-      </label>
+      <div class="wishlist-item">
+        <a href="${item.url}" target="_blank">${item.url}</a><br/>
+        <label>
+          <input type="checkbox" ${item.notify ? "checked" : ""} data-id="${docSnap.id}" />
+          Notify me if this item goes on sale / restocks
+        </label>
+        <button class="delete-btn" data-id="${docSnap.id}">🗑</button>
+      </div>
     `;
 
+    // Notify toggle
     const checkbox = li.querySelector("input[type='checkbox']");
     checkbox.addEventListener("change", async () => {
       await updateDoc(doc(db, "wishlist", docSnap.id), {
         notify: checkbox.checked
       });
+    });
+
+    // Delete button
+    const deleteButton = li.querySelector(".delete-btn");
+    deleteButton.addEventListener("click", async () => {
+      if (confirm("Are you sure you want to delete this item?")) {
+        await deleteDoc(doc(db, "wishlist", docSnap.id));
+        loadWishlist();
+      }
     });
 
     wishlistItems.appendChild(li);
