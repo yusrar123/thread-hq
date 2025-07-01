@@ -54,6 +54,30 @@ wishlistForm.addEventListener("submit", async (e) => {
       url,
       notify: false
     });
+function loadWishlist() {
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      db.collection("wishlist")
+        .where("userId", "==", user.uid)
+        .get()
+        .then(snapshot => {
+          const list = document.getElementById("wishlistItems");
+          list.innerHTML = ""; // clear previous
+
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const li = document.createElement("li");
+            li.style.padding = "10px 0";
+            li.innerHTML = `<a href="${data.url}" target="_blank" style="color: #000;">${data.url}</a>`;
+            list.appendChild(li);
+          });
+        });
+    }
+  });
+}
+
+// Load on page load
+loadWishlist();
 
     wishlistForm.reset();
     loadWishlist();
