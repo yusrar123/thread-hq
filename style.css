@@ -87,3 +87,51 @@ button {
   margin-top: 8px;
   font-size: 1rem;
 }
+.dashboard {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+#wishlistForm {
+  margin-bottom: 20px;
+}
+
+#wishlistForm input[type="url"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+}
+
+#wishlistForm button {
+  padding: 10px 20px;
+  border: none;
+  background: #272727;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.wishlist-list {
+  list-style: none;
+  padding: 0;
+}
+
+.wishlist-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.wishlist-list a {
+  color: #272727;
+  word-break: break-all;
+}
+
+.wishlist-list .empty {
+  color: #777;
+  font-style: italic;
+}
