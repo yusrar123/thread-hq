@@ -2,193 +2,157 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thread HQ - Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | Thread HQ</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
+      background-color: #f7f4f1;
       font-family: 'Playfair Display', serif;
-      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
       color: #333;
     }
 
     header {
-      padding: 20px;
-      text-align: center;
-      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background-color: #fff;
       border-bottom: 1px solid #ddd;
     }
 
     .logo {
-      max-width: 180px;
+      height: 50px;
+    }
+
+    .logout-button {
+      background: transparent;
+      color: #923d34;
+      border: 2px solid #923d34;
+      padding: 8px 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .logout-button:hover {
+      background-color: #923d34;
+      color: white;
     }
 
     main {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     h1 {
       text-align: center;
-      font-size: 26px;
+      font-size: 2.5rem;
+      color: #923d34;
       margin-bottom: 20px;
     }
 
     form {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      gap: 12px;
       margin-bottom: 30px;
+      justify-content: center;
     }
 
     input[type="url"] {
+      flex: 1;
       padding: 12px;
       border: 1px solid #ccc;
-      border-radius: 12px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 1rem;
     }
 
-    button {
-      background-color: black;
+    button[type="submit"] {
+      background-color: #923d34;
       color: white;
-      padding: 12px;
-      font-size: 16px;
       border: none;
-      border-radius: 12px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .message {
-      background-color: #e6ffe6;
-      color: #2a7a2a;
-      padding: 10px;
-      border-radius: 8px;
-      display: none;
-      margin-bottom: 20px;
+    button[type="submit"]:hover {
+      background-color: #7a2e29;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: white;
+      margin-bottom: 15px;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .wishlist-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .wishlist-item a {
+      color: #923d34;
+      text-decoration: underline;
+      font-size: 1rem;
+    }
+
+    .wishlist-item label {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .delete-btn {
+      align-self: flex-end;
+      background: transparent;
+      border: none;
+      color: #923d34;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .empty {
       text-align: center;
-    }
-
-    ul#wishlistItems {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    ul#wishlistItems li {
-      margin-bottom: 12px;
-    }
-
-    ul#wishlistItems a {
-      color: #000;
-      text-decoration: none;
-      font-size: 15px;
-      word-break: break-word;
+      color: #999;
+      font-style: italic;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
+
   <header>
     <img src="assets/logo.png" alt="Thread HQ Logo" class="logo" />
+    <button id="logoutButton" class="logout-button">Logout</button>
   </header>
-<div style="text-align: center; margin-top: 20px;">
-  <button id="logoutButton" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-size: 14px;">
-    ← Log Out & Return to Home
-  </button>
-</div>
-
 
   <main>
     <h1>Your Wishlist</h1>
- <form id="wishlistForm">
-  <input type="url" id="productUrl" required />
-  <button type="submit">Save</button>
-</form>
 
-<div id="successMessage" class="message">✅ Saved successfully!</div>
+    <form id="wishlistForm">
+      <input type="url" placeholder="Paste product URL here..." required />
+      <button type="submit">Save</button>
+    </form>
 
-<ul id="wishlistItems"></ul>
-
+    <ul id="wishlistItems">
+      <!-- Wishlist items will load here -->
+    </ul>
   </main>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
-      authDomain: "thread-hq.firebaseapp.com",
-      projectId: "thread-hq",
-      storageBucket: "thread-hq.firebasestorage.app",
-      messagingSenderId: "308767276388",
-      appId: "1:308767276388:web:3cb466ce98693381a58e71",
-      measurementId: "G-M490XWV1C5"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const auth = firebase.auth();
-  </script>
-
-  <script>
-    const wishlistForm = document.getElementById("wishlistForm");
-    const productUrl = document.getElementById("productUrl");
-    const successMessage = document.getElementById("successMessage");
-    const wishlistItems = document.getElementById("wishlistItems");
-
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        alert("Please log in first.");
-        return;
-      }
-
-      // Load wishlist items
-      db.collection("wishlist")
-        .where("userId", "==", user.uid)
-        .get()
-        .then(snapshot => {
-          wishlistItems.innerHTML = "";
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const li = document.createElement("li");
-            li.innerHTML = `<a href="${data.url}" target="_blank">${data.url}</a>`;
-            wishlistItems.appendChild(li);
-          });
-        });
-
-      // Form submit
-      wishlistForm.addEventListener("submit", e => {
-        e.preventDefault();
-        const url = productUrl.value.trim();
-        if (!url) return;
-
-        db.collection("wishlist").add({
-          url: url,
-          userId: user.uid,
-          notify: true,
-          lastPrice: "9999"
-        }).then(() => {
-          // Show success message
-          successMessage.style.display = "block";
-          setTimeout(() => {
-            successMessage.style.display = "none";
-          }, 3000);
-
-          // Add to list immediately
-          const li = document.createElement("li");
-          li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
-          wishlistItems.appendChild(li);
-
-          productUrl.value = "";
-        });
-      });
-    });
-  </script>
   <script type="module" src="dashboard.js"></script>
-
 </body>
 </html>
