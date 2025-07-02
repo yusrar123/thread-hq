@@ -3,33 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login – Thread HQ</title>
+  <title>Login - Thread HQ</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f7f4f1;
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      width: 180px;
+      margin-bottom: 30px;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      text-align: center;
+      color: #923d34;
+      margin-bottom: 25px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    label {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #555;
+    }
+
+    button {
+      background-color: #923d34;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #7d2f2a;
+    }
+
+    .back-home {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .back-home a {
+      text-decoration: none;
+      color: #923d34;
+      font-size: 14px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="Thread HQ Logo" class="logo" />
-  </header>
+  <img src="assets/logo.png" alt="Thread HQ Logo" class="logo"/>
 
-  <main>
-    <section class="signup" id="login">
-      <h2>Login</h2>
-     <form id="loginForm">
-  <input type="email" placeholder="Email" required />
-  <input type="password" placeholder="Password" required />
-  
-  <label style="font-size: 14px; display: block; margin-top: 10px;">
-    <input type="checkbox" id="rememberMe" />
-    Remember me
-  </label>
+  <div class="login-container">
+    <h1>Welcome Back</h1>
+    <form id="loginForm">
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <label class="remember-me">
+        <input type="checkbox" id="rememberMe" />
+        Remember Me
+      </label>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 
-  <button type="submit">Log In</button>
-</form>
+  <div class="back-home">
+    <a href="index.html">← Back to Home</a>
+  </div>
 
-    </section>
-  </main>
-
-  <!-- Your Firebase Login Script -->
-  <script src="login.js" type="module"></script>
+  <script type="module" src="login.js"></script>
 </body>
 </html>
