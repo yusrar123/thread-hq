@@ -15,7 +15,7 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ✅ Initialize Firebase
+// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyB3F9eISWbNs6Q2q8N_5R9MSIqznaWxxbE",
   authDomain: "thread-hq.firebaseapp.com",
@@ -26,74 +26,66 @@ const firebaseConfig = {
   measurementId: "G-M490XWV1C5"
 };
 
+// ✅ Initialize
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ✅ DOM Elements
 const wishlistForm = document.getElementById("wishlistForm");
-const productUrl = document.getElementById("productUrl");
 const wishlistItems = document.getElementById("wishlistItems");
-const successMessage = document.getElementById("successMessage");
-
 let currentUser = null;
 
-// ✅ Wait for user to be logged in
-onAuthStateChanged(auth, async (user) => {
+// ✅ Auth check
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log("✅ User is still logged in:", user.email);  // <- Add this line
     currentUser = user;
     loadWishlist();
   } else {
-    console.log("❌ User is not logged in");  // <- Add this line too
     window.location.href = "login.html";
   }
 });
 
-
-// ✅ Submit Wishlist Form
+// ✅ Save product URL
 wishlistForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const url = productUrl.value.trim();
-  if (!url) return;
+  const url = wishlistForm.elements[0].value;
 
-  // Get price from URL
-let initialPrice = null;
-try {
-  const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-  const data = await res.json();
-  const html = data.contents;
-
-  const priceMatch = html.match(/(?:Rs\.|PKR|₨)\s?([0-9,]+)/i);
-  if (priceMatch) {
-    initialPrice = parseInt(priceMatch[1].replace(/,/g, ""));
+  if (!url) {
+    alert("Please enter a URL.");
+    return;
   }
-} catch (err) {
-  console.error("Could not fetch price:", err);
-}
 
-await addDoc(collection(db, "wishlist"), {
-  userId: currentUser.uid,
-  email: currentUser.email,
-  url,
-  notify: false,
-  lastKnownPrice: initialPrice
-});
+  try {
+    // (Optional) Try to get initial price from product page
+    let initialPrice = null;
+    try {
+      const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      const html = data.contents;
+      const match = html.match(/(?:Rs\.|PKR|₨)\s?([0-9,]+)/i);
+      if (match) {
+        initialPrice = parseInt(match[1].replace(/,/g, ""));
+      }
+    } catch (err) {
+      console.log("Price fetch failed:", err.message);
+    }
 
+    await addDoc(collection(db, "wishlist"), {
+      userId: currentUser.uid,
+      email: currentUser.email,
+      url: url,
+      notify: false,
+      lastKnownPrice: initialPrice
+    });
 
-    successMessage.style.display = "block";
-    setTimeout(() => {
-      successMessage.style.display = "none";
-    }, 3000);
-
-    productUrl.value = "";
+    wishlistForm.reset();
     loadWishlist();
   } catch (error) {
     alert("Error saving item: " + error.message);
   }
 });
 
-// ✅ Load Wishlist Items
+// ✅ Load wishlist
 async function loadWishlist() {
   wishlistItems.innerHTML = "";
 
@@ -120,7 +112,7 @@ async function loadWishlist() {
       </div>
     `;
 
-    // ✅ Toggle Notify
+    // ✅ Handle checkbox
     const checkbox = li.querySelector("input[type='checkbox']");
     checkbox.addEventListener("change", async () => {
       await updateDoc(doc(db, "wishlist", docSnap.id), {
@@ -128,10 +120,10 @@ async function loadWishlist() {
       });
     });
 
-    // ✅ Delete Item
-    const deleteButton = li.querySelector(".delete-btn");
-    deleteButton.addEventListener("click", async () => {
-      if (confirm("Are you sure you want to delete this item?")) {
+    // ✅ Handle delete
+    const deleteBtn = li.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", async () => {
+      if (confirm("Delete this item?")) {
         await deleteDoc(doc(db, "wishlist", docSnap.id));
         loadWishlist();
       }
@@ -140,15 +132,3 @@ async function loadWishlist() {
     wishlistItems.appendChild(li);
   });
 }
-// 🔓 Log Out and Redirect
-const logoutButton = document.getElementById("logoutButton");
-if (logoutButton) {
-  logoutButton.addEventListener("click", () => {
-    auth.signOut().then(() => {
-      window.location.href = "index.html";
-    }).catch((error) => {
-      alert("Error logging out: " + error.message);
-    });
-  });
-}
-
