@@ -132,3 +132,17 @@ async function loadWishlist() {
     wishlistItems.appendChild(li);
   });
 }
+// ✅ Logout button functionality
+const logoutButton = document.getElementById("logoutButton");
+
+if (logoutButton) {
+  logoutButton.addEventListener("click", () => {
+    auth.signOut()
+      .then(() => {
+        window.location.href = "index.html"; // Or login.html if you prefer
+      })
+      .catch((error) => {
+        alert("Logout error: " + error.message);
+      });
+  });
+}
