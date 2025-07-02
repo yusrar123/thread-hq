@@ -57,13 +57,27 @@ wishlistForm.addEventListener("submit", async (e) => {
   const url = productUrl.value.trim();
   if (!url) return;
 
-  try {
-    await addDoc(collection(db, "wishlist"), {
-      userId: currentUser.uid,
-      url: url,
-      notify: true,
-      lastPrice: "9999"
-    });
+  // Get price from URL
+let initialPrice = null;
+try {
+  const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+  const data = await res.json();
+  const html = data.contents;
+
+  const priceMatch = html.match(/(?:Rs\.|PKR|₨)\s?([0-9,]+)/i);
+  if (priceMatch) {
+    initialPrice = parseInt(priceMatch[1].replace(/,/g, ""));
+  }
+} catch (err) {
+  console.error("Could not fetch price:", err);
+}
+
+await addDoc(collection(db, "wishlist"), {
+  userId: currentUser.uid,
+  url,
+  notify: false,
+  lastKnownPrice: initialPrice
+});
 
     successMessage.style.display = "block";
     setTimeout(() => {
