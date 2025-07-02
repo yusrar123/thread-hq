@@ -74,10 +74,12 @@ try {
 
 await addDoc(collection(db, "wishlist"), {
   userId: currentUser.uid,
+  email: currentUser.email,
   url,
   notify: false,
   lastKnownPrice: initialPrice
 });
+
 
     successMessage.style.display = "block";
     setTimeout(() => {
