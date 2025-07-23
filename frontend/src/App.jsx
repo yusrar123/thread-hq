@@ -25,6 +25,7 @@ function App() {
 					element={token ? <Dashboard /> : <Navigate to="/login" />}
 				/>
 				<Route path="*" element={<Navigate to="/" />} />
+				<Route path="*" element={<p>Path not resolved</p>} />
 			</Routes>
 		</Router>
 	);
