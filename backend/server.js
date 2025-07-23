@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth.js";
+import wishlistRoutes from "./routes/wishlist.js";
 
 dotenv.config(); // Load .env file
 
@@ -12,9 +13,7 @@ app.use(cors());
 
 
 app.use("/api/auth", authRoutes);
-
-
-
+app.use("/api/wishlist", wishlistRoutes);
 
 
 const PORT = process.env.PORT || 5000;

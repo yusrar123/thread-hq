@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { loginUser } from "../services/auth";
 export default function Login() {
 	const [form, setForm] = useState({ email: "", password: "" });
 	const [error, setError] = useState("");
@@ -14,13 +14,11 @@ export default function Login() {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			// Placeholder: Replace with actual API call
-			const token = "fake-token";
-			const user = { name: "Test User", email: form.email };
+			const { token, user } = await loginUser(form);
 
 			localStorage.setItem("token", token);
 			localStorage.setItem("user", JSON.stringify(user));
-			navigate("/dashboard");
+			navigate("/waitlist");
 			console.log("Login successful");
 		} catch (err) {
 			setError(err.message || "Login failed");

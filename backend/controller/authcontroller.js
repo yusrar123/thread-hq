@@ -24,6 +24,7 @@ export const register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            waitlist: true
 
         });
 
@@ -43,6 +44,7 @@ export const register = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                waitlist: user.waitlist,
 
             },
         });
@@ -81,6 +83,7 @@ export const login = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                waitlist: user.waitlist,
 
             },
         });

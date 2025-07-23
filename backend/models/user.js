@@ -21,7 +21,11 @@ const userSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-    }
+    },
+    waitlist: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 export default mongoose.model('User', userSchema);

@@ -20,12 +20,13 @@ export default function SignUp() {
 		setIsLoading(true);
 		try {
 			const { token, user } = await registerUser(form);
-
-			localStorage.setItem("token", token);
+			localStorage.setItem("token in sign up", token);
 			localStorage.setItem("user", JSON.stringify(user));
 
+			console.log("Signup successful", user);
+
 			setTimeout(() => {
-				navigate("/dashboard");
+				navigate("/waitlist");
 			}, 300);
 		} catch (err) {
 			console.error("Signup error:", err);
@@ -48,7 +49,7 @@ export default function SignUp() {
 				</div>
 
 				{/* Sign Up Box */}
-				<div className="bg-white shadow-lg rounded-2xl p-10 border border-redThread/10 backdrop-blur-sm w-full max-w-lg">
+				<div className="bg-white shadow-lg rounded-2xl p-10 border border-redThread/10 backdrop-blur-sm w-full max-w-2xl">
 					<div className="text-center mb-6">
 						<h2 className="text-2xl text-redThread mb-2 font-bold">
 							Create Your Account
