@@ -4,14 +4,14 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
-// import AuthForm from "./pages/authForm";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Waitlist from "./pages/waitlist";
 import Dashboard from "./pages/dashboard";
+import { getStorageItem } from "./utils/storage";
 
 function App() {
-	const token = localStorage.getItem("token");
+	const token = getStorageItem("token");
 
 	return (
 		<Router>
@@ -24,9 +24,7 @@ function App() {
 					path="/dashboard"
 					element={token ? <Dashboard /> : <Navigate to="/login" />}
 				/>
-				<Route path="*" element={<div>404 Fallback Reached</div>} />
-
-				{/* <Route path="*" element={<Navigate to="/" />} /> 👈 fallback */}
+				<Route path="*" element={<Navigate to="/" />} />
 			</Routes>
 		</Router>
 	);
