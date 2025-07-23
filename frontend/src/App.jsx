@@ -24,7 +24,9 @@ function App() {
 					path="/dashboard"
 					element={token ? <Dashboard /> : <Navigate to="/login" />}
 				/>
-				<Route path="*" element={<Navigate to="/" />} /> {/* 👈 fallback */}
+				<Route path="*" element={<div>404 Fallback Reached</div>} />
+
+				{/* <Route path="*" element={<Navigate to="/" />} /> 👈 fallback */}
 			</Routes>
 		</Router>
 	);
