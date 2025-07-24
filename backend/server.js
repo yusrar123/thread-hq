@@ -15,7 +15,8 @@ app.use(cors({
         'http://localhost:3000',
         'http://localhost:5173',
         'http://localhost:4173',
-        'https://thread-hq-sub-ainas-projects.vercel.app', // this is your deployed frontend
+        'https://thread-inky.vercel.app/',
+        // 'https://thread-hq-sub-ainas-projects.vercel.app', // this is your deployed frontend
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
