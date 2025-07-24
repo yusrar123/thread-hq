@@ -113,9 +113,9 @@ export default function Login() {
 			</div>
 
 			{/* Decorative Elements */}
-			<div className="absolute top-10 left-10 w-20 h-20 bg-redThread/10 rounded-full blur-xl"></div>
+			{/* <div className="absolute top-10 left-10 w-20 h-20 bg-redThread/10 rounded-full blur-xl"></div>
 			<div className="absolute bottom-10 right-10 w-32 h-32 bg-amber-200/20 rounded-full blur-xl"></div>
-			<div className="absolute top-1/2 left-1/4 w-16 h-16 bg-redThread/10 rounded-full blur-lg"></div>
+			<div className="absolute top-1/2 left-1/4 w-16 h-16 bg-redThread/10 rounded-full blur-lg"></div> */}
 		</div>
 	);
 }
