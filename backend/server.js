@@ -11,6 +11,21 @@ const app = express()
 app.use(express.json());
 app.use(cors());
 
+app.use(cors({
+    origin: [
+        'http://localhost:3000',           // React default port
+        'http://localhost:5173',           // Vite default port
+        'http://localhost:4173',           // Vite preview port
+        // 'https://thread-3z6nkm94t-sub-ainas-projects.vercel.app/',
+        'https://thread-hq-sub-ainas-projects.vercel.app/',
+
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/wishlist", wishlistRoutes);
