@@ -16,6 +16,7 @@ app.use(cors({
         'http://localhost:5173',
         'http://localhost:4173',
         'https://thread-inky.vercel.app',
+        'https://www.thread-hq.com'
 
     ],
     credentials: true,
