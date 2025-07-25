@@ -17,14 +17,15 @@ export const register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });
         }
-
+        const waitlistCount = await User.countDocuments({ waitlist: true });
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = new User({
             name,
             email,
             password: hashedPassword,
-            waitlist: true
+            waitlist: true,
+            waitlistNumber: waitlistCount + 1,
 
         });
 
@@ -45,6 +46,7 @@ export const register = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 waitlist: user.waitlist,
+                waitlistNumber: waitlistCount + 1,
 
             },
         });
@@ -84,9 +86,11 @@ export const login = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 waitlist: user.waitlist,
-
+                waitlistNumber: user.waitlistNumber,
             },
         });
+
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

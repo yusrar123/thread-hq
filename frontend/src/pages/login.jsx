@@ -19,7 +19,7 @@ export default function Login() {
 			localStorage.setItem("token", token);
 			localStorage.setItem("user", JSON.stringify(user));
 			navigate("/waitlist");
-			console.log("Login successful");
+			// console.log("Login successful");
 		} catch (err) {
 			setError(err.message || "Login failed");
 		} finally {

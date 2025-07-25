@@ -23,7 +23,7 @@ export default function SignUp() {
 			localStorage.setItem("token in sign up", token);
 			localStorage.setItem("user", JSON.stringify(user));
 
-			console.log("Signup successful", user);
+			// console.log("Signup successful", user);
 
 			setTimeout(() => {
 				navigate("/waitlist");

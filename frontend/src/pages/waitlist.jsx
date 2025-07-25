@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react";
+
 export default function Waitlist() {
+	const [waitlistNumber, setWaitlistNumber] = useState(null);
+
+	useEffect(() => {
+		// const token = localStorage.getItem("token");
+		const storedUser = JSON.parse(localStorage.getItem("user"));
+		// console.log(localStorage.getItem("user"));
+		if (storedUser?.waitlistNumber) {
+			// console.log("Waitlist number found:", storedUser.waitlistNumber);
+			setWaitlistNumber(storedUser.waitlistNumber);
+		}
+	}, []);
+
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream via-stone-50 to-stone-100 text-center p-4">
 			<div className="relative max-w-lg w-full">
@@ -33,12 +47,20 @@ export default function Waitlist() {
 					{/* Main message */}
 					<div className="space-y-4 mb-8">
 						<p className="text-lg font-serif text-redThread/80 leading-relaxed font-bold">
-							Built for the ones who know
+							Built for the ones who know how to shop
 						</p>
 						<p className="text-redThread/70 font-light text-base leading-relaxed max-w-sm mx-auto">
 							We're crafting something special just for you. You'll be among the
 							first to know when we're ready to welcome you in.
 						</p>
+						{waitlistNumber && (
+							<p className="text-redThreadDark font-serif font-bold text-lg mt-4">
+								Your Waitlist Number:{" "}
+								<span className="underline decoration-redThread/50">
+									{waitlistNumber}
+								</span>
+							</p>
+						)}
 					</div>
 
 					{/* Status indicator */}
@@ -51,7 +73,7 @@ export default function Waitlist() {
 
 					{/* Footer note */}
 					<p className="text-xs text-redThread/50 mt-8 font-light">
-						We'll notify you via email when your exclusive access is ready
+						stay tuned for updates and exclusive access to our launch.
 					</p>
 				</div>
 			</div>

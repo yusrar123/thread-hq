@@ -9,6 +9,7 @@ import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Waitlist from "./pages/waitlist";
 import Dashboard from "./pages/dashboard";
+import ProtectedRoute from "./components/protectedRoutes";
 
 function App() {
 	const token = localStorage.getItem("token");
@@ -19,14 +20,23 @@ function App() {
 				<Route path="/" element={<Login />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<SignUp />} />
-				<Route path="/waitlist" element={<Waitlist />} />
+				<Route
+					path="/waitlist"
+					element={
+						<ProtectedRoute>
+							<Waitlist />
+						</ProtectedRoute>
+					}
+				/>
+
 				<Route
 					path="/dashboard"
-					element={token ? <Dashboard /> : <Navigate to="/login" />}
+					element={
+						<ProtectedRoute>
+							<Dashboard />
+						</ProtectedRoute>
+					}
 				/>
-				{/* <Route path="*" element={<div>404 Fallback Reached</div>} /> */}
-
-				{/* <Route path="*" element={<Navigate to="/" />} /> 👈 fallback */}
 			</Routes>
 		</Router>
 	);

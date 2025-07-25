@@ -14,9 +14,12 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
         minlength: 6,
         select: false,
+        required: function () {
+            return !this.waitlist; // password only required if not a waitlist user
+        },
     },
     createdAt: {
         type: Date,
@@ -25,6 +28,11 @@ const userSchema = new mongoose.Schema({
     waitlist: {
         type: Boolean,
         default: true,
+    },
+    waitlistNumber: {
+        type: Number,
+        unique: true,
+        sparse: true,
     },
 });
 
