@@ -71,7 +71,7 @@ export const scrapeProductInfo = async (url) => {
             const priceElement = $(selector);
             if (priceElement.length > 0) {
                 rawPriceText = priceElement.text().trim();
-                console.log(`Found price with selector "${selector}":`, rawPriceText);
+                // console.log(`Found price with selector "${selector}":`, rawPriceText);
                 if (rawPriceText) break;
             }
         }

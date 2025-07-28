@@ -19,7 +19,7 @@ export const register = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const waitlistCount = await User.countDocuments({ waitlist: true });
-        const totalUsers = await User.countDocuments(); // total number of users
+        const totalUsers = await User.countDocuments();
         console.log("Waitlist count:", totalUsers + 1);
         const user = new User({
             name,
@@ -81,7 +81,7 @@ export const login = async (req, res) => {
             { id: user._id },
             process.env.JWT_SECRET,
             { expiresIn: "2d" });
-        const totalUsers = await User.countDocuments(); // add this in login
+        const totalUsers = await User.countDocuments();
 
         console.log(totalUsers);
         res.json({
