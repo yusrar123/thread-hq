@@ -10,7 +10,7 @@ export default function Waitlist() {
 		// console.log(localStorage.getItem("user"));
 		if (storedUser?.waitlistNumber) {
 			console.log("Waitlist number found:", storedUser.waitlistNumber);
-			console.log("Waitlist total found:", storedUser.waitlistTotal);
+
 			setWaitlistNumber(storedUser.waitlistNumber);
 			setWaitlistTotal(storedUser.waitlistTotal);
 		}

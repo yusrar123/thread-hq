@@ -17,17 +17,17 @@ export const register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });
         }
-        const waitlistCount = await User.countDocuments({ waitlist: true });
         const hashedPassword = await bcrypt.hash(password, 10);
-        const totalwaitlist = waitlistCount + 50;
-
+        const waitlistCount = await User.countDocuments({ waitlist: true });
+        const totalUsers = await User.countDocuments(); // total number of users
+        console.log("Waitlist count:", totalUsers + 1);
         const user = new User({
             name,
             email,
             password: hashedPassword,
             waitlist: true,
             waitlistNumber: waitlistCount + 1,
-            waitlistTotal: totalwaitlist,
+            waitlistTotal: totalUsers + 1,
 
         });
 
@@ -49,8 +49,7 @@ export const register = async (req, res) => {
                 email: user.email,
                 waitlist: user.waitlist,
                 waitlistNumber: waitlistCount + 1,
-                waitlistTotal: user.waitlistTotal,
-
+                waitlistTotal: totalUsers + 1,
             },
         });
 
@@ -82,7 +81,9 @@ export const login = async (req, res) => {
             { id: user._id },
             process.env.JWT_SECRET,
             { expiresIn: "2d" });
+        const totalUsers = await User.countDocuments(); // add this in login
 
+        console.log(totalUsers);
         res.json({
             token,
             user: {
@@ -91,7 +92,7 @@ export const login = async (req, res) => {
                 email: user.email,
                 waitlist: user.waitlist,
                 waitlistNumber: user.waitlistNumber,
-                waitlistTotal: user.waitlistTotal,
+                waitlistTotal: totalUsers + 1,
             },
         });
 
