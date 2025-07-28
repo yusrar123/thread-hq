@@ -19,6 +19,7 @@ export const register = async (req, res) => {
         }
         const waitlistCount = await User.countDocuments({ waitlist: true });
         const hashedPassword = await bcrypt.hash(password, 10);
+        const totalwaitlist = waitlistCount + 50;
 
         const user = new User({
             name,
@@ -26,6 +27,7 @@ export const register = async (req, res) => {
             password: hashedPassword,
             waitlist: true,
             waitlistNumber: waitlistCount + 1,
+            waitlistTotal: totalwaitlist,
 
         });
 
@@ -47,9 +49,11 @@ export const register = async (req, res) => {
                 email: user.email,
                 waitlist: user.waitlist,
                 waitlistNumber: waitlistCount + 1,
+                waitlistTotal: user.waitlistTotal,
 
             },
         });
+
     } catch (error) {
         console.error("Registration error:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -87,6 +91,7 @@ export const login = async (req, res) => {
                 email: user.email,
                 waitlist: user.waitlist,
                 waitlistNumber: user.waitlistNumber,
+                waitlistTotal: user.waitlistTotal,
             },
         });
 

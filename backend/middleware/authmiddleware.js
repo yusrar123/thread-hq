@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 export const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    // Token must be in format: "Bearer <token>"
+    // Token format: "Bearer <token>"
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ error: "Unauthorized. No token provided." });
     }
@@ -13,8 +13,8 @@ export const verifyToken = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.id; // Attach user ID to the request
-        next(); // Go to the next middleware/route
+        req.user = decoded.id;
+        next();
     } catch (err) {
         res.status(401).json({ error: "Invalid or expired token" });
     }

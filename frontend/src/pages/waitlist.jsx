@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 
 export default function Waitlist() {
 	const [waitlistNumber, setWaitlistNumber] = useState(null);
+	const [waitlistTotal, setWaitlistTotal] = useState(null);
 
 	useEffect(() => {
 		// const token = localStorage.getItem("token");
 		const storedUser = JSON.parse(localStorage.getItem("user"));
 		// console.log(localStorage.getItem("user"));
 		if (storedUser?.waitlistNumber) {
-			// console.log("Waitlist number found:", storedUser.waitlistNumber);
+			console.log("Waitlist number found:", storedUser.waitlistNumber);
+			console.log("Waitlist total found:", storedUser.waitlistTotal);
 			setWaitlistNumber(storedUser.waitlistNumber);
+			setWaitlistTotal(storedUser.waitlistTotal);
 		}
 	}, []);
 
@@ -57,7 +60,7 @@ export default function Waitlist() {
 							<p className="text-redThreadDark font-serif font-bold text-lg mt-4">
 								Your Waitlist Number:{" "}
 								<span className="underline decoration-redThread/50">
-									{waitlistNumber}
+									{waitlistNumber} of {waitlistTotal}
 								</span>
 							</p>
 						)}
