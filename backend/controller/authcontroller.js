@@ -103,7 +103,7 @@ export const login = async (req, res) => {
                 email: user.email,
                 waitlist: user.waitlist,
                 waitlistNumber: user.waitlistNumber,
-                waitlistTotal: totalUsers,
+                waitlistTotal: totalUsers + 1,
             },
         });
 
