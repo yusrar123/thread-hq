@@ -3,8 +3,6 @@ import { scrapeProductInfo } from "./scraper.js";
 
 // 1. Add a new wishlist item
 
-// import { scrapeProductInfo } from "../utils/scrapeProduct.js";
-
 export const addToWishlist = async (req, res) => {
     try {
         const { productUrl } = req.body;
