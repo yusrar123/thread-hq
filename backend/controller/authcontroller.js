@@ -1,10 +1,18 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import { getNextWaitlistNumber } from "../utils/waitlist.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret123";
 
+async function generateUniqueWaitlistNumber(retries = 50) {
+    for (let i = 0; i < retries; i++) {
+        const waitlistNumber = await getNextWaitlistNumber();
+        const existing = await User.findOne({ waitlistNumber });
+        if (!existing) return waitlistNumber;
+    }
+    throw new Error("Failed to generate unique waitlist number after retries");
+}
 //reg new user
 export const register = async (req, res) => {
     try {
@@ -18,15 +26,18 @@ export const register = async (req, res) => {
             return res.status(400).json({ error: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const waitlistCount = await User.countDocuments({ waitlist: true });
+
+        const waitlistNumber = await generateUniqueWaitlistNumber();
         const totalUsers = await User.countDocuments();
+
+
         console.log("Waitlist count:", totalUsers + 1);
         const user = new User({
             name,
             email,
             password: hashedPassword,
             waitlist: true,
-            waitlistNumber: waitlistCount + 1,
+            waitlistNumber,
             waitlistTotal: totalUsers + 1,
 
         });
@@ -48,7 +59,7 @@ export const register = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 waitlist: user.waitlist,
-                waitlistNumber: waitlistCount + 1,
+                waitlistNumber,
                 waitlistTotal: totalUsers + 1,
             },
         });
@@ -92,7 +103,7 @@ export const login = async (req, res) => {
                 email: user.email,
                 waitlist: user.waitlist,
                 waitlistNumber: user.waitlistNumber,
-                waitlistTotal: totalUsers + 1,
+                waitlistTotal: totalUsers,
             },
         });
 
