@@ -1,0 +1,16 @@
+[
+	{
+		"id": "yellow",
+		"name": "Yellow",
+		"contactEmail": "support@yellow.com",
+		"whatsapp": "923001234567",
+		"logo": "https://yourcdn.com/brands/yellow-logo.png"
+	},
+	{
+		"id": "outfitter",
+		"name": "Outfitter",
+		"contactEmail": "help@outfitter.com",
+		"whatsapp": "923004567890",
+		"logo": "https://yourcdn.com/brands/outfitter-logo.png"
+	}
+]

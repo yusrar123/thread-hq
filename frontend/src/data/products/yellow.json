@@ -1,0 +1,58 @@
+[
+	{
+		"id": "ylw-001",
+		"title": "Yellow Printed Kurta",
+		"description": "Lightweight cotton kurta featuring a traditional yellow block print design. Perfect for summer wear with breathable fabric.",
+		"price": 3499,
+		"images": [
+			"https://yourcdn.com/products/yellow/ylw-001-1.jpg",
+			"https://yourcdn.com/products/yellow/ylw-001-2.jpg"
+		],
+		"category": "Kurta",
+		"sizes": ["S", "M", "L", "XL"],
+		"available": true
+	},
+	{
+		"id": "ylw-002",
+		"title": "White Lawn Suit",
+		"description": "A premium 3-piece unstitched lawn suit in pure white with subtle embroidery, ideal for formal summer gatherings.",
+		"price": 4999,
+		"images": ["https://yourcdn.com/products/yellow/ylw-002.jpg"],
+		"category": "Unstitched",
+		"sizes": [],
+		"available": false
+	},
+	{
+		"id": "ylw-003",
+		"title": "Floral Printed Dupatta",
+		"description": "Chiffon dupatta with vibrant floral prints. Lightweight and perfect to pair with plain suits.",
+		"price": 1799,
+		"images": ["https://yourcdn.com/products/yellow/ylw-003.jpg"],
+		"category": "Accessories",
+		"sizes": [],
+		"available": true
+	},
+	{
+		"id": "ylw-004",
+		"title": "Men's Black Kurta",
+		"description": "Stylish black cotton kurta for men with modern collar and sleek tailoring.",
+		"price": 2899,
+		"images": ["https://yourcdn.com/products/yellow/ylw-004.jpg"],
+		"category": "Men",
+		"sizes": ["M", "L", "XL"],
+		"available": true
+	},
+	{
+		"id": "ylw-005",
+		"title": "Embroidered Shirt (Stitched)",
+		"description": "Ready-to-wear shirt with detailed thread embroidery on sleeves and front panel.",
+		"price": 3699,
+		"images": [
+			"https://yourcdn.com/products/yellow/ylw-005-1.jpg",
+			"https://yourcdn.com/products/yellow/ylw-005-2.jpg"
+		],
+		"category": "Stitched",
+		"sizes": ["S", "M", "L"],
+		"available": true
+	}
+]

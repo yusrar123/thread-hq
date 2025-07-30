@@ -5,6 +5,7 @@ import {
 	getWishlist,
 	removeFromWishlist,
 } from "../services/wishlist";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
 	const [wishlist, setWishlist] = useState([]);
@@ -43,24 +44,23 @@ export default function Dashboard() {
 		setIsLoading(true);
 		try {
 			const res = await addToWishlist(productUrl);
-
-			// Optimistically prepend new item
 			setWishlist((prev) => [res.item, ...prev]);
 
 			setProductUrl("");
 			setShowAddForm(false);
-			alert("Product added to wishlist successfully!");
 
-			// Optional: refresh from backend after 1 second
+			toast.success("Product added to wishlist! ", {
+				icon: "✨",
+			});
+
 			setTimeout(fetchWishlist, 1000);
 		} catch (err) {
 			console.error("Add error:", err.message);
-			alert("Failed to add product. Please try again.");
+			toast.error("Failed to add product. Please try again.");
 		} finally {
 			setIsLoading(false);
 		}
 	};
-
 	const handleDelete = async (id) => {
 		try {
 			await removeFromWishlist(id);
@@ -118,97 +118,90 @@ export default function Dashboard() {
 			return acc;
 		}, 0);
 
-	const formatSavedAmount = (amount) => {
-		return amount > 0 ? `PKR ${amount.toLocaleString()}` : "PKR 0";
-	};
+	// const formatSavedAmount = (amount) => {
+	// 	return amount > 0 ? `PKR ${amount.toLocaleString()}` : "PKR 0";
+	// };
 
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen bg-cream">
 			{/* Header */}
-			<header className="bg-red-800 text-white py-8 shadow-sm">
-				<div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-					<div className="text-center flex-1">
-						<h1 className="text-5xl font-light tracking-[0.2em] mb-2">
-							THREAD
-						</h1>
-						<p className="text-red-200 text-sm tracking-[0.3em] font-light">
-							EST. 2025
-						</p>
+			<header className="bg-redThread text-white py-2 shadow-lg relative">
+				<div className="max-w-7xl mx-auto px-6">
+					{/* Centered Logo */}
+					<div className="text-center">
+						<img
+							src="/assets/logo2.png"
+							alt="Thread HQ Logo"
+							className="w-56 h-auto mx-auto opacity-90 hover:opacity-100 transition-opacity duration-300"
+						/>
 					</div>
+
+					{/* Logout Button - Positioned Absolutely */}
 					<button
 						onClick={handleLogout}
-						className="flex items-center gap-2 bg-red-900 hover:bg-red-950 px-4 py-2 rounded-md transition duration-200"
+						className="absolute top-8 right-6 flex items-center gap-2 bg-redThreadDark/50 hover:bg-redThreadDark/80 px-6 py-3 rounded-lg transition-all duration-300 font-serif text-sm tracking-wide shadow-md hover:shadow-lg backdrop-blur-sm border border-white/10"
 					>
-						<LogOut size={16} />
+						<LogOut size={18} />
 						Logout
 					</button>
 				</div>
 			</header>
 
-			<div className="max-w-7xl mx-auto px-6 py-8">
+			<div className="max-w-7xl mx-auto px-6 py-12">
 				{/* Header Section */}
-				<div className="flex justify-between items-start mb-8">
-					<div>
-						<h2 className="text-4xl font-light text-gray-800 mb-2">
+				<div className="mb-12">
+					<div className="text-center mb-8">
+						<h1 className="font-script text-6xl text-redThread mb-4">
 							Your Wishlist
-						</h2>
+						</h1>
+						<p className="font-serif text-gray-600 text-lg">
+							Curated collections for the discerning eye
+						</p>
 					</div>
-					<div className="flex gap-8 text-right">
-						<div>
-							<div className="text-3xl font-light text-gray-900">
+
+					{/* Stats Cards */}
+					<div className="flex justify-center">
+						{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto text-center"> */}
+						<div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+							<div className="text-3xl font-serif font-bold text-redThread mb-2 text-center">
 								{wishlist.length}
 							</div>
-							<div className="text-sm text-gray-500 font-light">Items</div>
-						</div>
-						<div>
-							<div className="text-3xl font-light text-gray-900">
-								{
-									wishlist.filter(
-										(item) =>
-											item.originalPrice && item.price !== item.originalPrice
-									).length
-								}
+							<div className="text-sm font-serif text-gray-500 uppercase tracking-wider">
+								Items
 							</div>
-							<div className="text-sm text-gray-500 font-light">On Sale</div>
-						</div>
-						<div>
-							<div className="text-3xl font-light text-gray-900">
-								{formatSavedAmount(totalSaved)}
-							</div>
-							<div className="text-sm text-gray-500 font-light">Saved</div>
 						</div>
 					</div>
 				</div>
-
-				{/* Filter Tabs */}
-				<div className="border-b border-gray-200 mb-8">
-					<nav className="flex space-x-8">
-						{filters.map((filter) => (
-							<button
-								key={filter.key}
-								onClick={() => setActiveFilter(filter.key)}
-								className={`py-4 px-1 border-b-2 font-medium text-sm tracking-wider transition-colors duration-200 ${
-									activeFilter === filter.key
-										? "border-red-800 text-red-800"
-										: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-								}`}
-							>
-								{filter.label}
-							</button>
-						))}
-					</nav>
-				</div>
-
+				{/* Filter Tabs
+				<div className="flex justify-center mb-12">
+					<div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100">
+						<nav className="flex space-x-2">
+							{filters.map((filter) => (
+								<button
+									key={filter.key}
+									onClick={() => setActiveFilter(filter.key)}
+									className={`px-6 py-3 rounded-xl font-serif text-sm font-medium tracking-wider transition-all duration-300 ${
+										activeFilter === filter.key
+											? "bg-redThread text-white shadow-md"
+											: "text-gray-600 hover:text-redThread hover:bg-gray-50"
+									}`}
+								>
+									{filter.label}
+								</button>
+							))}
+						</nav>
+					</div>
+				</div> */}
 				{/* Add Product Form */}
 				{showAddForm && (
-					<div className="mb-8 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-						<div className="flex justify-between items-center mb-4">
-							<h3 className="text-lg font-medium text-gray-900">
+					<div className="mb-12 bg-white rounded-2xl shadow-lg p-8 border border-gray-100 max-w-2xl mx-auto">
+						<div className="flex justify-between items-center mb-6">
+							<h3 className="font-serif text-xl font-medium text-gray-900">
 								Add New Product
 							</h3>
 							<button
 								onClick={() => setShowAddForm(false)}
-								className="text-gray-400 hover:text-gray-600 transition duration-200"
+								className="text-gray-400 hover:text-gray-600 transition-colors duration-200 p-2 hover:bg-gray-50 rounded-lg"
 							>
 								<X size={20} />
 							</button>
@@ -219,13 +212,13 @@ export default function Dashboard() {
 								value={productUrl}
 								onChange={(e) => setProductUrl(e.target.value)}
 								placeholder="Paste product link here..."
-								className="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+								className="flex-1 px-6 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-redThread/20 focus:border-redThread font-serif transition-all duration-200"
 								disabled={isLoading}
 							/>
 							<button
 								onClick={handleAdd}
 								disabled={isLoading || !productUrl.trim()}
-								className="bg-red-800 text-white px-6 py-3 rounded-md hover:bg-red-900 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center gap-2"
+								className="bg-redThread text-white px-8 py-4 rounded-xl hover:bg-redThreadDark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 font-serif font-medium shadow-md hover:shadow-lg"
 							>
 								{isLoading ? (
 									<>
@@ -234,7 +227,7 @@ export default function Dashboard() {
 									</>
 								) : (
 									<>
-										<Plus size={16} />
+										<Plus size={18} />
 										Add Product
 									</>
 								)}
@@ -242,50 +235,54 @@ export default function Dashboard() {
 						</div>
 					</div>
 				)}
-
 				{/* Product Grid */}
 				{isInitialLoading ? (
-					<div className="text-center py-16">
-						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800 mx-auto"></div>
-						<p className="text-gray-500 mt-4">Loading your wishlist...</p>
+					<div className="text-center py-20">
+						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-redThread mx-auto"></div>
+						<p className="text-gray-500 mt-6 font-serif">
+							Loading your wishlist...
+						</p>
 					</div>
 				) : filteredItems.length === 0 ? (
-					<div className="text-center py-16">
-						<div className="bg-white rounded-lg shadow-sm p-16 border border-gray-200">
+					<div className="text-center py-20">
+						<div className="bg-white rounded-3xl shadow-lg p-16 border border-gray-100 max-w-md mx-auto">
 							<div
 								onClick={() => setShowAddForm(true)}
-								className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-auto mb-6 cursor-pointer hover:border-red-400 transition-colors duration-200"
+								className="w-20 h-20 border-2 border-dashed border-redThread/30 rounded-2xl flex items-center justify-center mx-auto mb-8 cursor-pointer hover:border-redThread transition-colors duration-300 hover:bg-redThread/5"
 							>
-								<Plus size={32} className="text-gray-400" />
+								<Plus size={28} className="text-redThread/60" />
 							</div>
-							<h3 className="text-xl font-light text-gray-900 mb-2 tracking-wide">
-								ADD NEW ITEM
+							<h3 className="font-script text-3xl text-redThread mb-4">
+								Start Your Collection
 							</h3>
-							<p className="text-gray-500 mb-6 font-light">
+							<p className="text-gray-500 mb-8 font-serif leading-relaxed">
 								{activeFilter === "ALL"
-									? "Your wishlist is empty. Start by adding your first product link."
+									? "Your wishlist awaits. Begin by adding your first treasured find."
 									: `No items found in ${activeFilter.toLowerCase()} category.`}
 							</p>
 							<button
 								onClick={() => setShowAddForm(true)}
-								className="bg-red-800 text-white px-6 py-3 rounded-md hover:bg-red-900 transition duration-200 font-light tracking-wide"
+								className="bg-redThread text-white px-8 py-4 rounded-xl hover:bg-redThreadDark transition-all duration-300 font-serif font-medium shadow-md hover:shadow-lg"
 							>
 								Add Your First Product
 							</button>
 						</div>
 					</div>
 				) : (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 						{/* Add New Item Card */}
 						<div
 							onClick={() => setShowAddForm(true)}
-							className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-shadow duration-200 h-80"
+							className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg transition-all duration-300 h-96 hover:border-redThread/20 group"
 						>
-							<div className="w-16 h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mb-4">
-								<Plus size={24} className="text-gray-400" />
+							<div className="w-16 h-16 border-2 border-dashed border-redThread/30 rounded-2xl flex items-center justify-center mb-6 group-hover:border-redThread group-hover:bg-redThread/5 transition-all duration-300">
+								<Plus
+									size={24}
+									className="text-redThread/60 group-hover:text-redThread"
+								/>
 							</div>
-							<h3 className="text-lg font-light text-gray-900 tracking-wide">
-								ADD NEW ITEM
+							<h3 className="font-script text-2xl text-redThread">
+								Add New Item
 							</h3>
 						</div>
 
@@ -293,12 +290,12 @@ export default function Dashboard() {
 						{filteredItems.map((item) => (
 							<div
 								key={item._id}
-								className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200"
+								className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group"
 							>
 								{/* Status Indicator */}
 								<div className="relative">
 									<div
-										className={`absolute top-4 right-4 w-3 h-3 rounded-full z-10 ${
+										className={`absolute top-4 right-4 w-3 h-3 rounded-full z-10 shadow-md ${
 											item.originalPrice && item.price !== item.originalPrice
 												? "bg-red-500"
 												: item.status === "WATCHING"
@@ -308,27 +305,29 @@ export default function Dashboard() {
 									></div>
 
 									{/* Product Image */}
-									<div className="aspect-square bg-gray-100 relative overflow-hidden">
+									<div className="aspect-square bg-gray-50 relative overflow-hidden">
 										{item.image ? (
 											<img
 												src={item.image}
 												alt={item.title}
-												className="w-full h-full object-cover"
+												className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 												onError={(e) => {
 													e.target.style.display = "none";
 												}}
 											/>
 										) : (
-											<div className="w-full h-full flex items-center justify-center bg-gray-200">
-												<span className="text-gray-400">No Image</span>
+											<div className="w-full h-full flex items-center justify-center bg-gray-100">
+												<span className="text-gray-400 font-serif">
+													No Image
+												</span>
 											</div>
 										)}
-										<div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+										<div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
 										{/* Product Title Overlay */}
-										<div className="absolute bottom-4 left-4 right-4">
-											<h3 className="text-white font-medium text-lg tracking-wide drop-shadow-lg line-clamp-2">
-												{item.title?.toUpperCase() || "PRODUCT"}
+										<div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+											<h3 className="text-white font-serif font-medium text-lg drop-shadow-lg line-clamp-2">
+												{item.title || "PRODUCT"}
 											</h3>
 										</div>
 									</div>
@@ -336,19 +335,18 @@ export default function Dashboard() {
 
 								{/* Product Details */}
 								<div className="p-6">
-									<div className="flex justify-between items-start mb-3">
+									<div className="flex justify-between items-start mb-4">
 										<div className="flex-1 min-w-0">
-											<p className="text-xs text-gray-500 font-medium tracking-wider mb-1">
-												{getDomainFromUrl(item.productUrl)?.toUpperCase() ||
-													"STORE"}
+											<p className="text-xs text-redThread font-serif font-medium tracking-widest mb-2 uppercase">
+												{getDomainFromUrl(item.productUrl) || "STORE"}
 											</p>
-											<h4 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2">
+											<h4 className="font-serif font-medium text-gray-900 text-sm leading-tight line-clamp-2 mb-3">
 												{item.title}
 											</h4>
 										</div>
 										<button
 											onClick={() => handleDelete(item._id)}
-											className="text-gray-400 hover:text-red-500 transition-colors duration-200 ml-2 flex-shrink-0"
+											className="text-gray-300 hover:text-red-500 transition-colors duration-200 ml-3 flex-shrink-0 p-2 hover:bg-gray-50 rounded-lg"
 										>
 											<Trash2 size={16} />
 										</button>
@@ -356,12 +354,12 @@ export default function Dashboard() {
 
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-2">
-											<span className="text-lg font-medium text-gray-900">
+											<span className="text-lg font-serif font-bold text-gray-900">
 												{item.price}
 											</span>
 											{item.originalPrice &&
 												item.originalPrice !== item.price && (
-													<span className="text-sm text-gray-500 line-through">
+													<span className="text-sm text-gray-400 line-through font-serif">
 														{item.originalPrice}
 													</span>
 												)}
@@ -370,7 +368,7 @@ export default function Dashboard() {
 											href={item.productUrl}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="text-red-800 hover:text-red-900 transition-colors duration-200"
+											className="text-redThread hover:text-redThreadDark transition-colors duration-200 p-2 hover:bg-gray-50 rounded-lg"
 										>
 											<ExternalLink size={16} />
 										</a>
@@ -385,7 +383,7 @@ export default function Dashboard() {
 			{/* Floating Add Button */}
 			<button
 				onClick={() => setShowAddForm(true)}
-				className="fixed bottom-8 right-8 bg-red-800 text-white rounded-full p-4 shadow-lg hover:bg-red-900 hover:shadow-xl transition-all duration-200 z-50"
+				className="fixed bottom-8 right-8 bg-redThread text-white rounded-2xl p-4 shadow-xl hover:bg-redThreadDark hover:shadow-2xl transition-all duration-300 z-50 hover:scale-105"
 			>
 				<Plus size={24} />
 			</button>

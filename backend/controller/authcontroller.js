@@ -94,6 +94,19 @@ export const login = async (req, res) => {
             { expiresIn: "2d" });
         const totalUsers = await User.countDocuments();
 
+        // In your login endpoint
+        console.time('find-user');
+        const users = await User.findOne({ email });
+        console.timeEnd('find-user');
+
+        console.time('password-verify');
+        const isMatchs = await bcrypt.compare(password, user.password);
+        console.timeEnd('password-verify');
+
+        console.time('generate-token');
+        const tokens = jwt.sign({ userId: user._id }, secret);
+        console.timeEnd('generate-token');
+
         console.log(totalUsers);
         res.json({
             token,
