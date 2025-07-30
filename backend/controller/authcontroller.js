@@ -104,7 +104,7 @@ export const login = async (req, res) => {
         console.timeEnd('password-verify');
 
         console.time('generate-token');
-        const tokens = jwt.sign({ userId: user._id }, secret);
+        const tokens = jwt.sign({ userId: user._id }, JWT_SECRET,);
         console.timeEnd('generate-token');
 
         console.log(totalUsers);
